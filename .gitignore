@@ -1,0 +1,45 @@
+# .gitignore
+
+# Ignore build directory
+/build/
+
+# Ignore all .o and .a files
+*.o
+*.a
+
+# Ignore all .so files
+*.so
+
+# Ignore all .dll files
+*.dll
+
+# Ignore all .exe files
+*.exe
+
+# Ignore all .out files
+*.out
+
+# Ignore all .log files
+*.log
+
+# Ignore all .sln, .vcxproj, .vcxproj.filters, .pdb, .ilk, .aps, .ncb, .sdf, .opensdf, .suo, .user files (Visual Studio)
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.pdb
+*.ilk
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+*.suo
+*.user
+
+# Ignore all .DS_Store files (macOS)
+.DS_Store
+
+# Ignore all .vscode directories
+.vscode/
+
+# Ignore all .ipynb_checkpoints directories (Jupyter Notebook)
+.ipynb_checkpoints/
