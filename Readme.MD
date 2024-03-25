@@ -15,6 +15,14 @@
 
 - file .blk ?
 
+- fare una vera cartella di test e muovere l'attale test in example
+
+- polimorfismo per i solver n base al tipo di blocco?
+
+- specializzare la classe sparse con asimmetriche etc? 
+
+- aggiungere e capire che metodi possono essere utili per la classe BlockMat
+
 
 ## Build
 
@@ -58,3 +66,7 @@ However, even though the destructor is pure virtual, you still need to provide a
 
 #### Dense Block
 
+
+## Loader
+
+per ora facciamo con dei csv, densi specificano valore per valore (ma va?!) mentre gli sparsi sono (riga, col, valore)
