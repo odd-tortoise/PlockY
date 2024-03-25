@@ -28,7 +28,4 @@ namespace PlockY{
     template <typename scalar>
     Block<scalar>::~Block() {}
 
-    // Block class and makes it pure virtual,
-    // which means Block is an abstract base class and cannot be instantiated on its own.
-    // However, even though the destructor is pure virtual, you still need to provide an implementation for it. This is because when a derived class is destroyed, it first calls its own destructor, then the destructor of its base class. If the base class destructor is not defined, you'll get a linker error.
 }

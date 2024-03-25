@@ -9,6 +9,13 @@
 
 - capire come gestire la parte di solver
 
+- doxygen
+
+- pyBinding alla fine o mano a mano?
+
+- file .blk ?
+
+
 ## Build
 
 1) Generate the build files: Open a terminal, navigate to your project directory, create a new directory named build (if it doesn't exist already), navigate into it, and run ```cmake ..```
@@ -18,36 +25,23 @@ to generate the build files.
 
 3) Run the test: After building the project, you should have an executable named test_MyClass in your build directory. You can run it with ```./test_MyClass``` (on Unix-based systems) or test_MyClass.exe (on Windows).
 
-## CLASS DIAGRAM - vecchio da aggiornate
+
+## .blk file
+
+Example Block File (.blk): file format for storing information related to blocks.
+Format:
+
+```
+<X> <Y> <Width> <Height> <Path> <Description>
+
+0 0  1 1  block_1.blabla "Small Block"
+2 2  3 3  block_2.blabla "Large Block"
+```
+
+## CLASS DIAGRAM - DEPRECATED - vecchio da aggiornate
 ``` mermaid 
 classDiagram
-    MatrixLoader <|-- CsvMatrixLoader
-    MatrixLoader <|-- BinaryMatrixLoader
-    MatrixLoader <|-- BlockMatrixLoader
-    MatrixLoader : +loadMatrix(filePath string)
-    CsvMatrixLoader : +loadMatrix(filePath string)
-    BinaryMatrixLoader : +loadMatrix(filePath string)
-    BlockMatrixLoader : +loadMatrix(filePath string)
-    BlockMatrixLoader : -loadBlockData(filePath string)
-    Matrix <|-- EigenMatrix
-    Matrix <|-- BlockMatrix
-    Matrix : -Eigen Matrix
-    Matrix : -BlockMatrix
-    Matrix : +solveSystem()
-    Matrix : +transpose()
-    Matrix : +determinant()
-    Matrix : +inverse()
-    EigenMatrix : -Eigen Matrix
-    EigenMatrix : +solveSystem()
-    EigenMatrix : +transpose()
-    EigenMatrix : +determinant()
-    EigenMatrix : +inverse()
-    BlockMatrix : -BlockMatrix
-    BlockMatrix : +blockTranspose()
-    BlockMatrix : +blockInverse()
-    BlockMatrix : +blockDeterminant()
-    BlockMatrix : +loadFromFile()
-    BlockMatrix : +saveToFile()
+   
 ```
 
 ## Commenti sparsi sulle varie classi
