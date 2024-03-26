@@ -23,6 +23,8 @@
 
 - aggiungere e capire che metodi possono essere utili per la classe BlockMat
 
+- eigen as git submodule, aggiugnere le cose per doxygen check al CMake
+
 
 ## Build
 
