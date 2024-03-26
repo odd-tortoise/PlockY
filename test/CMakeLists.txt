@@ -11,3 +11,6 @@ foreach(test_source ${TEST_SOURCES})
     # Link the test executable with the main library
     target_link_libraries(${test_name} PlockY)
 endforeach()
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/mat_shop
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
