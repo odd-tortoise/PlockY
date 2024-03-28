@@ -2,6 +2,7 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <iostream>
 
 namespace PlockY {
     /**
@@ -11,6 +12,7 @@ namespace PlockY {
      */
     template <typename Scalar>
     class Block {
+        static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
     public:
         /**
          * @brief Default constructor for the Block class.
@@ -64,15 +66,25 @@ namespace PlockY {
          * @param value The value to be set.
          */
         virtual void set(int row, int col, const Scalar& value) = 0;
+
+        /**
+         * @brief Virtual method to get the type of the block.
+         * 
+         * @return The type of the block.
+         */
+        virtual std::string getType() const = 0;
         
+        /**
+         * This method should be removed.
+         * @brief Pure virtual method to print the block.
+         */
+        virtual void print() const = 0;        
 
-        private:
-            int rows; /**< The number of rows in the block. */
-            int cols; /**< The number of columns in the block. */
+    private:
+        int rows; /**< The number of rows in the block. */
+        int cols; /**< The number of columns in the block. */
+    };
 
-        };
-
-        template <typename scalar>
-        Block<scalar>::~Block() {}
-
-    }
+    template <typename scalar>
+    Block<scalar>::~Block() {}
+}

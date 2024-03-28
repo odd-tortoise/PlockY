@@ -21,7 +21,7 @@ int main() {
     block2->set(1, 0,-3.0);
     block2->set(1, 1,-4.0);
 
-    PlockY::BlockMatrix<double> blockMatrix(2, 2);  // Adjust size as needed
+    PlockY::BlockMatrix<double> blockMatrix;  // Adjust size as needed
 
     // Add the Blocks to the BlockMatrix
     blockMatrix.setBlock(0, 0, std::move(block1));

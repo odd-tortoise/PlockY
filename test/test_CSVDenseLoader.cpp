@@ -6,7 +6,7 @@ int main() {
     PlockY::CsvBlockLoader<double> loader;
 
     // Load a DenseBlock
-    std::unique_ptr<PlockY::Block<double>> denseBlock = loader.createDense("mat_shop/sparse1.csv", 3, 3);
+    std::unique_ptr<PlockY::Block<double>> denseBlock = loader.createDense("mat_shop/dense33.csv", 3, 3);
     std::cout << "Loaded DenseBlock\n";
 
     // Print the DenseBlock data

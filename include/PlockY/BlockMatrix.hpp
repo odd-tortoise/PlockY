@@ -7,29 +7,43 @@
 namespace PlockY {
     template <typename Scalar>
     class BlockMatrix {
+        static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
     public:
-        BlockMatrix(int rows, int cols) : rows(rows), cols(cols) {}
-
+        BlockMatrix() = default;
 
         void setBlock(int row, int col, std::unique_ptr<Block<Scalar>> block) {
             blocks.push_back(std::make_tuple(row, col, std::move(block)));
         }
 
 
-    // shared o raw? 
-        Block<Scalar>* getBlock(int row, int col) {
-            for (const auto& block : blocks) {
-                if (std::get<0>(block) == row && std::get<1>(block) == col) {
-                    return std::get<2>(block).get();
+        std::shared_ptr<Block<Scalar>> getBlock(int row, int col) { 
+                for (const auto& block : blocks) {
+                    if (std::get<0>(block) == row && std::get<1>(block) == col) {
+                        return std::get<2>(block) ;
+                    }
+                }
+                return nullptr;
+        }     
+
+        void print() {
+            std::cout << "Block length: " << blocks.size() << std::endl;
+
+            for (const auto& blockTuple : blocks) {
+                int row = std::get<0>(blockTuple);
+                int col = std::get<1>(blockTuple);
+                std::shared_ptr<Block<Scalar>> block = std::get<2>(blockTuple);
+
+                std::cout << "Block at (" << row << ", " << col << "): ";
+                if (block) {
+                    block->print();
+                } else {
+                    std::cout << "Empty Block" << std::endl;
                 }
             }
-            return nullptr;
-        }
+        }   
 
     private:
-        int rows;
-        int cols;
-        std::vector<std::tuple<int, int, std::unique_ptr<Block<Scalar>>>> blocks;
+        std::vector<std::tuple<int, int, std::shared_ptr<Block<Scalar>>>> blocks;
     };
 }
 

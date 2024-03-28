@@ -3,9 +3,6 @@
 
 ## TODO 
 
-- finire di implementare BlockMatrix e decidere come strutturare il file che si occupa di gestire i blocchi della matrice
-
-- scirvere il dataloader (abstract factory direi)
 
 - capire come gestire la parte di solver
 
@@ -13,18 +10,21 @@
 
 - pyBinding alla fine o mano a mano?
 
-- file .blk ?
+- file .blk vanno bene?
 
 - fare una vera cartella di test e muovere l'attale test in example
 
-- polimorfismo per i solver n base al tipo di blocco?
-
 - specializzare la classe sparse con asimmetriche etc? 
-
-- aggiungere e capire che metodi possono essere utili per la classe BlockMat
 
 - eigen as git submodule, aggiugnere le cose per doxygen check al CMake
 
+- stati assert per il check del tipo va bene come è inserito ?
+
+- verificare la giusta implementazione della abs. factory e se ha senso in questo modo
+
+- singletons
+
+- finire i parser dei file, capire come fare quello della sparse, la densa sembra ok con quello di Eigen
 
 ## Build
 
@@ -46,12 +46,6 @@ Format:
 
 0 0  1 1  block_1.blabla "Small Block"
 2 2  3 3  block_2.blabla "Large Block"
-```
-
-## CLASS DIAGRAM - DEPRECATED - vecchio da aggiornate
-``` mermaid 
-classDiagram
-   
 ```
 
 ## Commenti sparsi sulle varie classi
