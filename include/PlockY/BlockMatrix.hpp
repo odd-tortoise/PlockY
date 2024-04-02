@@ -3,47 +3,38 @@
 
 #include <vector>
 #include <memory>
+#include <variant>
 
 namespace PlockY {
+    
+
     template <typename Scalar>
     class BlockMatrix {
-        static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
+// std::unique_ptr<std::variant<BlockDense, BlockSparse>> ptrVariant;
+// oppure
+// std::variant<std::shared_ptr<DenseBlock<Scalar>>, std::shared_ptr<SparseBlock<Scalar>>>;
+
+    using BlockPtr = std::variant<std::shared_ptr<DenseBlock<Scalar>>, std::shared_ptr<SparseBlock<Scalar>>>;
+    
     public:
         BlockMatrix() = default;
 
-        void setBlock(int row, int col, std::unique_ptr<Block<Scalar>> block) {
+        void setBlock(int row, int col, BlockPtr block) {
             blocks.push_back(std::make_tuple(row, col, std::move(block)));
         }
 
-
-        std::shared_ptr<Block<Scalar>> getBlock(int row, int col) { 
-                for (const auto& block : blocks) {
-                    if (std::get<0>(block) == row && std::get<1>(block) == col) {
-                        return std::get<2>(block) ;
-                    }
-                }
-                return nullptr;
-        }     
-
-        void print() {
-            std::cout << "Block length: " << blocks.size() << std::endl;
-
-            for (const auto& blockTuple : blocks) {
-                int row = std::get<0>(blockTuple);
-                int col = std::get<1>(blockTuple);
-                std::shared_ptr<Block<Scalar>> block = std::get<2>(blockTuple);
-
-                std::cout << "Block at (" << row << ", " << col << "): ";
-                if (block) {
-                    block->print();
-                } else {
-                    std::cout << "Empty Block" << std::endl;
+        BlockPtr getBlock(int row, int col) {
+            for (const auto& block : blocks) {
+                if (std::get<0>(block) == row && std::get<1>(block) == col) {
+                    //devo usare visit ??
+                    return std::get<2>(block);   
                 }
             }
-        }   
+            return nullptr;
+        }
 
     private:
-        std::vector<std::tuple<int, int, std::shared_ptr<Block<Scalar>>>> blocks;
+        std::vector<std::tuple<int, int, BlockPtr>> blocks;
     };
 }
 

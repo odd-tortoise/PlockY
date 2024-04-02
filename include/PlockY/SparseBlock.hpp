@@ -5,17 +5,19 @@
 
 namespace PlockY
 {
-    template <typename Scalar>
-    class SparseBlock : public Block<Scalar>
-    { 
+
+template <typename Scalar>
+    class SparseBlock : public Block<SparseBlock<Scalar>, Scalar>
+    {
+        static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
+
     public:
         // Constructor
-        SparseBlock(int rows, int cols) : Block<Scalar>(rows, cols), matrix(rows, cols) {}
+        SparseBlock(int rows, int cols) : Block<SparseBlock<Scalar>, Scalar>(rows, cols), matrix(rows, cols) {}
 
-        // Implement operations for sparse blocks
-        Scalar get(int row, int col) const override { return matrix.coeff(row, col); }
-        void set(int row, int col, const Scalar& value) override { matrix.insert(row, col) = value; }
-
+        // Implement operations for dense blocks
+        Scalar getImpl(int row, int col) const { return matrix.coeff(row, col); }
+        void setImpl(int row, int col, const Scalar& value) { matrix.insert(row, col) = value; }
         void setMatrix(const Eigen::SparseMatrix<Scalar>& matrix) {
             // Check that the matrix has the correct size
             if (matrix.rows() != this->getRows() || matrix.cols() != this->getCols()) {
@@ -26,21 +28,9 @@ namespace PlockY
             this->matrix = matrix;
         }
 
-        
-        std::string getType() const override {
-            return "Sparse";
-        }
-
-        void print() const override {
-            std::cout << "Sparse Block" << std::endl;
-            for (int i = 0; i < matrix.outerSize(); ++i) {
-                for (typename Eigen::SparseMatrix<Scalar>::InnerIterator it(matrix, i); it; ++it) {
-                    std::cout << "(" << it.row() << ", " << it.col() << "): " << it.value() << std::endl;
-                }
-            }
-        }
+        BlockType getType() const override { return BlockType::Sparse; }
 
     private:
         Eigen::SparseMatrix<Scalar> matrix;
-    };  
-}
+    };
+} // namespace PlockY

@@ -1,6 +1,9 @@
 #include "PlockY/SparseBlock.hpp"
 #include <iostream>
 #include <Eigen/Sparse>
+#include "PlockY/BlockLoaderFactory.hpp"
+#include "PlockY/CsvBlockLoader.hpp"
+
 
 int main() {
     // Create a SparseBlock of type double
@@ -19,6 +22,14 @@ int main() {
     } else {
         std::cout << "Test failed: SparseBlock does not correctly store and retrieve values.\n";
     }
+
+
+    std::cout << "Sparse Block reading from CSV file \n";
+    PlockY::CsvBlockLoader<double> loader;
+
+    // Load a DenseBlock
+    auto sparseBlockLoaded = loader.createSparse("mat_shop/sparse33.csv", 3, 3);
+    std::cout << "Loaded sparse Block\n";
 
     return 0;
 }

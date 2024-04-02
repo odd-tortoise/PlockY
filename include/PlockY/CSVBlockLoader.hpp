@@ -1,30 +1,15 @@
 #pragma once
-
 #include "PlockY/Block.hpp"
 #include "PlockY/DenseBlock.hpp"
 #include "PlockY/SparseBlock.hpp"
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <memory>
-#include <Eigen/Dense>
+#include "PlockY/BlockLoaderFactory.hpp"
 
 namespace PlockY {
-
-    template <typename Scalar>
-    class AbstractBlockFactory {
-    static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
-
-    public:
-        virtual std::unique_ptr<Block<Scalar>> createDense(const std::string& filePath, int row, int col) = 0;
-        virtual std::unique_ptr<Block<Scalar>> createSparse(const std::string& filePath, int row, int col) = 0;
-    };
-
     template <typename Scalar>
     class CsvBlockLoader : public AbstractBlockFactory<Scalar> {
+        static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
     public:
-        std::unique_ptr<Block<Scalar>> createDense(const std::string& filePath, int row, int col) override {
+        std::unique_ptr<DenseBlock<Scalar>> createDense(const std::string& filePath, int row, int col) override {
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
@@ -48,6 +33,7 @@ namespace PlockY {
             Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> matrix(row, cols);
 
             // Read the data into the matrix
+            // separte the first row since we already read it
             ss.clear();
             ss.str(line);
             for (int j = 0; j < cols; ++j) {
@@ -75,7 +61,7 @@ namespace PlockY {
             
         }
 
-        std::unique_ptr<Block<Scalar>> createSparse(const std::string& filePath, int row, int col) override {
+        std::unique_ptr<SparseBlock<Scalar>> createSparse(const std::string& filePath, int row, int col) override {
             // Open the file
 
 
@@ -88,6 +74,7 @@ namespace PlockY {
             int roww, coll;
             Scalar value;
             std::vector<Eigen::Triplet<Scalar>> tripletList;
+            std::istringstream iss(line);
 
             while (std::getline(iss, line)) {
                 std::istringstream lineStream(line);
@@ -106,11 +93,10 @@ namespace PlockY {
 
                 // Subtract 1 from row and col if your CSV file uses 1-based indexing
                 tripletList.push_back(Eigen::Triplet<Scalar>(roww, coll, value));
-                std::cout<<"roww:"<<roww<<" coll:"<<coll<<" value:"<<value<<std::endl;
             }
 
             // Create a SparseMatrix and populate it with the triplet list
-            Eigen::SparseMatrix<double> mat;
+            Eigen::SparseMatrix<Scalar> mat;
             mat.setFromTriplets(tripletList.begin(), tripletList.end());
              // Create a SparseBlock and populate it with the matrix data
             auto block = std::make_unique<SparseBlock<Scalar>>(mat.rows(), mat.cols());
@@ -118,17 +104,4 @@ namespace PlockY {
             return block;
         }
     };
-
-    template <typename Scalar>
-    class JSONBlockLoader : public AbstractBlockFactory<Scalar> {
-    public:
-        std::unique_ptr<Block<Scalar>> createDense(const std::string& filePath, int row, int col) override {
-            return std::make_unique<DenseBlock<Scalar>>(row, col);
-        }
-
-        std::unique_ptr<Block<Scalar>> createSparse(const std::string& filePath, int row, int col) override {
-            return std::make_unique<DenseBlock<Scalar>>(row, col);
-        }
-    };
-
 }
