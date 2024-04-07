@@ -52,8 +52,14 @@ namespace PlockY {
                 // Create the appropriate factory based on the file extension
                 std::unique_ptr<AbstractBlockFactory<Scalar>> factory = createFactory(extension);
                 // Use the factory to create a block based on the type
-                std::unique_ptr<Block<Scalar>> block = (blockType == "Dense") ? 
-                    factory->createDense(blockFilePath,row,col) : factory->createSparse(blockFilePath,row,col);
+
+                std::unique_ptr<Block<Scalar>> block = nullptr;
+                
+                if (blockType == "Dense")
+                    block = factory->createDense(blockFilePath,row,col);
+                else
+                    block = factory->createSparse(blockFilePath,row,col);
+                    
                 blockMatrix.setBlock(posRow, posCol, std::move(block));
             }
             return blockMatrix;

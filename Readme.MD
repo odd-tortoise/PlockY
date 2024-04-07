@@ -3,28 +3,12 @@
 
 ## TODO 
 
+- branch parser: implementare i vari loader
+- branch CRTP: capire se ha senso o meno usare il CRTP per i BLocchi o i solver? 
+- branch solver: capire qual è il modo ottimale per implementare la risuluzione dei singoli blocchi. Come differenziare correttemente tra dense e sparse. Il solver genereale si occuperà di "spostare" i blocchi fare lo splitting, che design? Strategy?.
 
-- capire come gestire la parte di solver
 
-- doxygen
-
-- pyBinding alla fine o mano a mano?
-
-- file .blk vanno bene?
-
-- fare una vera cartella di test e muovere l'attale test in example
-
-- specializzare la classe sparse con asimmetriche etc? 
-
-- eigen as git submodule, aggiugnere le cose per doxygen check al CMake
-
-- stati assert per il check del tipo va bene come è inserito ?
-
-- verificare la giusta implementazione della abs. factory e se ha senso in questo modo
-
-- singletons
-
-- finire i parser dei file, capire come fare quello della sparse, la densa sembra ok con quello di Eigen
+- vario: doxygen, pybind, rifinire alcuni metodi , capire se vogliamo salvere le coordinate "vere" dei blocchi, aggiungere una classe VectorBlock similmente a Block?
 
 ## Build
 
@@ -38,7 +22,7 @@ to generate the build files.
 
 ## .blk file
 
-Example Block File (.blk): file format for storing information related to blocks.
+Example Block File (.blk): file format for storing information related to matrices blocks.
 Format:
 
 ```
@@ -48,21 +32,14 @@ Format:
 2 2  3 3  block_2.blabla "Large Block"
 ```
 
-## Commenti sparsi sulle varie classi
+## .vblk file
 
-### Block
+Example Vector Block File (.cblk): file format for storing information related to vectors blocks.
+Format:
 
-Block is a template -> header only.
+```
+<X> <Size> <Path>
 
-Block class and makes it pure virtual, which means Block is an abstract base class and cannot be instantiated on its own.
-However, even though the destructor is pure virtual, you still need to provide an implementation for it. This is because when a derived class is destroyed, it first calls its own destructor, then the destructor of its base class. If the base class destructor is not defined, you'll get a linker error.
-
-#### Sparse Block
-
-
-#### Dense Block
-
-
-## Loader
-
-per ora facciamo con dei csv, densi specificano valore per valore (ma va?!) mentre gli sparsi sono (riga, col, valore)
+0 2  block_1.blabla
+2 3  block_2.blabla
+```

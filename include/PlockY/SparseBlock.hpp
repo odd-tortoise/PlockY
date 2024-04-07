@@ -27,18 +27,9 @@ namespace PlockY
         }
 
         
-        std::string getType() const override {
-            return "Sparse";
-        }
+        BlockType getType() const override { return BlockType::Sparse; }
 
-        void print() const override {
-            std::cout << "Sparse Block" << std::endl;
-            for (int i = 0; i < matrix.outerSize(); ++i) {
-                for (typename Eigen::SparseMatrix<Scalar>::InnerIterator it(matrix, i); it; ++it) {
-                    std::cout << "(" << it.row() << ", " << it.col() << "): " << it.value() << std::endl;
-                }
-            }
-        }
+        const Eigen::SparseMatrix<Scalar>& getMatrix() const { return matrix; }   
 
     private:
         Eigen::SparseMatrix<Scalar> matrix;

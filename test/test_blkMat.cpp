@@ -4,6 +4,6 @@
 int main() {
     PlockY::BlockMatrixLoader<double> loader;
     PlockY::BlockMatrix<double> mat = loader.load("blk_files/test.blk");
-    mat.print();
+    //mat.print();
     return 0;
 }

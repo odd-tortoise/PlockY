@@ -9,7 +9,7 @@ namespace PlockY{
     template <typename Scalar>
     class CsvBlockLoader : public AbstractBlockFactory<Scalar> {
     public:
-        std::unique_ptr<Block<Scalar>> createDense(const std::string& filePath, int row, int col) override {
+        std::unique_ptr<DenseBlock<Scalar>> createDense(const std::string& filePath, int row, int col) override {
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
@@ -60,7 +60,7 @@ namespace PlockY{
             
         }
 
-        std::unique_ptr<Block<Scalar>> createSparse(const std::string& filePath, int row, int col) override {
+        std::unique_ptr<SparseBlock<Scalar>> createSparse(const std::string& filePath, int row, int col) override {
             // Open the file
 
 

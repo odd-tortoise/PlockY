@@ -24,15 +24,9 @@ namespace PlockY
             this->matrix = matrix;
         }
 
-        
-        std::string getType() const override {
-            return "Dense";
-        }
+        const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& getMatrix() const { return matrix; }   
 
-        void print() const override {
-            std::cout << "Dense Block" << std::endl;
-            std::cout << matrix << std::endl;
-        }
+        BlockType getType() const override { return BlockType::Dense; }
 
     private:
         Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> matrix;

@@ -20,9 +20,6 @@ namespace PlockY {
                     values.push_back(value);
                 }
             }
-            for (auto value : values) {
-                std::cout << value << " ";
-            }
             return std::make_unique<Eigen::VectorXd>(Eigen::Map<Eigen::VectorXd>(values.data(), values.size()));
         }
     };

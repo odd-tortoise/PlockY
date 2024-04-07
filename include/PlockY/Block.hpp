@@ -3,6 +3,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
+#include <variant>  
 
 namespace PlockY {
     /**
@@ -10,6 +11,8 @@ namespace PlockY {
      * 
      * @tparam Scalar The type of data stored in the block.
      */
+    enum class BlockType { Dense, Sparse };
+
     template <typename Scalar>
     class Block {
         static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
@@ -27,64 +30,21 @@ namespace PlockY {
          */
         virtual ~Block() = 0;
 
-        /**
-         * @brief Constructor for the Block class.
-         * 
-         * @param rows_ The number of rows in the block.
-         * @param cols_ The number of columns in the block.
-         */
         Block(int rows_, int cols_) : rows(rows_), cols(cols_) {}
 
-        /**
-         * @brief Get the number of rows in the block.
-         * 
-         * @return The number of rows in the block.
-         */
         int getRows() const { return rows; }
-
-        /**
-         * @brief Get the number of columns in the block.
-         * 
-         * @return The number of columns in the block.
-         */
         int getCols() const { return cols; }
 
-        /**
-         * @brief Pure virtual method to get the value at a specific position in the block.
-         * 
-         * @param row The row index.
-         * @param col The column index.
-         * @return The value at the specified position.
-         */
         virtual Scalar get(int row, int col) const = 0;
-
-        /**
-         * @brief Pure virtual method to set the value at a specific position in the block.
-         * 
-         * @param row The row index.
-         * @param col The column index.
-         * @param value The value to be set.
-         */
         virtual void set(int row, int col, const Scalar& value) = 0;
 
-        /**
-         * @brief Virtual method to get the type of the block.
-         * 
-         * @return The type of the block.
-         */
-        virtual std::string getType() const = 0;
-        
-        /**
-         * This method should be removed.
-         * @brief Pure virtual method to print the block.
-         */
-        virtual void print() const = 0;        
+        virtual BlockType getType() const = 0;
 
     private:
         int rows; /**< The number of rows in the block. */
         int cols; /**< The number of columns in the block. */
     };
 
-    template <typename scalar>
-    Block<scalar>::~Block() {}
+    template <typename Scalar>
+    Block<Scalar>::~Block() {}
 }
