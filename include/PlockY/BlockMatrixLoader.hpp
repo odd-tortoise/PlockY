@@ -1,6 +1,7 @@
 #pragma once
 
-#include "PlockY/BlockLoader.hpp"
+#include "PlockY/AbstractBlockLoaderFactory.hpp"
+#include "PlockY/CSVBlockLoaderFactory.hpp"
 #include "PlockY/BlockMatrix.hpp"
 #include "PlockY/Block.hpp"
 #include <string>
@@ -23,14 +24,11 @@ namespace PlockY {
         std::unique_ptr<AbstractBlockFactory<Scalar>> createFactory(const std::string& extension) {
             if (extension == "csv") {
                 return std::make_unique<CsvBlockLoader<Scalar>>();;
-            } else if (extension == "JSON") {
-                return std::make_unique<JSONBlockLoader<Scalar>>();
             } else {
                 throw std::runtime_error("Unsupported file extension");
             }
         }
         
-
     public:
         BlockMatrixLoader(){};
 

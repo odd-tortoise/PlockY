@@ -1,4 +1,4 @@
-#include "Plocky/BlockLoader.hpp"
+#include "Plocky/CSVBlockLoaderFactory.hpp"
 #include <iostream>
 #include <memory>
 

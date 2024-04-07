@@ -1,26 +1,11 @@
 #pragma once
-
-#include "PlockY/Block.hpp"
+#include "PlockY/AbstractBlockLoaderFactory.hpp"
 #include "PlockY/DenseBlock.hpp"
 #include "PlockY/SparseBlock.hpp"
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <memory>
-#include <Eigen/Dense>
 
-namespace PlockY {
+namespace PlockY{
 
-    template <typename Scalar>
-    class AbstractBlockFactory {
-    static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
-
-    public:
-        virtual std::unique_ptr<Block<Scalar>> createDense(const std::string& filePath, int row, int col) = 0;
-        virtual std::unique_ptr<Block<Scalar>> createSparse(const std::string& filePath, int row, int col) = 0;
-    };
-
+    
     template <typename Scalar>
     class CsvBlockLoader : public AbstractBlockFactory<Scalar> {
     public:
@@ -88,7 +73,7 @@ namespace PlockY {
             int roww, coll;
             Scalar value;
             std::vector<Eigen::Triplet<Scalar>> tripletList;
-
+            std::istringstream iss(line);
             while (std::getline(iss, line)) {
                 std::istringstream lineStream(line);
                 std::string cell;
@@ -116,18 +101,6 @@ namespace PlockY {
             auto block = std::make_unique<SparseBlock<Scalar>>(mat.rows(), mat.cols());
             block->setMatrix(mat);
             return block;
-        }
-    };
-
-    template <typename Scalar>
-    class JSONBlockLoader : public AbstractBlockFactory<Scalar> {
-    public:
-        std::unique_ptr<Block<Scalar>> createDense(const std::string& filePath, int row, int col) override {
-            return std::make_unique<DenseBlock<Scalar>>(row, col);
-        }
-
-        std::unique_ptr<Block<Scalar>> createSparse(const std::string& filePath, int row, int col) override {
-            return std::make_unique<DenseBlock<Scalar>>(row, col);
         }
     };
 
