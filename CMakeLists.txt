@@ -6,6 +6,9 @@ project(
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# Set correct version of c++
+set(CMAKE_CXX_STANDARD 17)
+
 # Include Eigen headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extra/eigen-3.4.0)
 
