@@ -2,6 +2,7 @@
 
 #include "PlockY/AbstractBlockLoaderFactory.hpp"
 #include "PlockY/CSVBlockLoaderFactory.hpp"
+#include "PlockY/BinBlockLoaderFactory.hpp"
 #include "PlockY/BlockMatrix.hpp"
 #include "PlockY/Block.hpp"
 #include <string>
@@ -24,7 +25,9 @@ namespace PlockY {
         std::unique_ptr<AbstractBlockFactory<Scalar>> createFactory(const std::string& extension) {
             if (extension == "csv") {
                 return std::make_unique<CsvBlockLoader<Scalar>>();;
-            } else {
+            } else if  (extension == "bin") {
+                return std::make_unique<BinBlockLoader<Scalar>>();;
+                } else {
                 throw std::runtime_error("Unsupported file extension");
             }
         }
