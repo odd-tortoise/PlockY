@@ -40,6 +40,9 @@ namespace PlockY {
 
         virtual BlockType getType() const = 0;
 
+        //virtual const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& getMatrix() const = 0;
+        //virtual const Eigen::SparseMatrix<Scalar>& getMatrix() const = 0;
+
     private:
         int rows; /**< The number of rows in the block. */
         int cols; /**< The number of columns in the block. */

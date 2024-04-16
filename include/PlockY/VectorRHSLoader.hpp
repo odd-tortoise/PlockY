@@ -51,9 +51,6 @@ namespace PlockY {
 
             // Determine the file extension
             std::string extension = getFileExtension(blockFilePath);
-
-            std::cout<<pos<<size<<blockFilePath<<std::endl;
-
             // Create the appropriate factory based on the file extension
             std::unique_ptr<VectorBlockLoaderFactory<Scalar>> factory = createFactory(extension);
 

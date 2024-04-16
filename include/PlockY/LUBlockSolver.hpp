@@ -8,21 +8,13 @@
 
 
 namespace PlockY {
-    template<typename BlockType,typename Scalar>
-    class LUSolver : public BlockSolverBase<BlockType> {
-    public:
+    class LUSolver : public BlockSolverBase {
         using VectorType = Eigen::VectorXd;
-        VectorType solve(const BlockType& block, const VectorType& vector) const override {
-            if (is_instance_of_v<BlockType, DenseBlock>) {
-                Eigen::FullPivLU<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> lu(block.getMatrix());
-                return lu.solve(vector);
-            } else if  (is_instance_of_v<BlockType, SparseBlock>)  {
-                throw std::invalid_argument("Unsupported  SPARSE block type");
-            } else {
-                throw std::invalid_argument("Unsupported block type");
-            }
+        using MatrixType = Eigen::MatrixXd;   
+    public:
+        VectorType solve(const MatrixType& block, const VectorType& vector) const override {
+            Eigen::FullPivLU<MatrixType> lu(block);
+            return lu.solve(vector);   
         }
     };
-
 } // namespace PlockY
-

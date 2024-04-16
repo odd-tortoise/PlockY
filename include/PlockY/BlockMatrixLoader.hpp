@@ -11,7 +11,7 @@
 namespace PlockY {
     template <typename Scalar>
     class BlockMatrixLoader {
-    static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
+        static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
     private: 
         std::string getFileExtension(const std::string& filePath) {
             size_t dotPos = filePath.rfind('.');
@@ -61,6 +61,7 @@ namespace PlockY {
                     block = factory->createSparse(blockFilePath,row,col);
                     
                 blockMatrix.setBlock(posRow, posCol, std::move(block));
+                
             }
             return blockMatrix;
         }
