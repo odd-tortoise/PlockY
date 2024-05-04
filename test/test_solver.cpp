@@ -18,7 +18,7 @@
 int main() {
     
     PlockY::BlockMatrixLoader<double> loader;
-    PlockY::BlockMatrix<double> mat = loader.load("blk_files/test_solver.blk");
+    PlockY::BlockMatrix<double> mat = loader.load("blk_files/test_solver_vario.blk");
 
     PlockY::VectorRHSLoader<double> loader_vec;
     PlockY::VectorRHS<double> vec_RHS = loader_vec.load("blk_files/test_solver.vblk");
@@ -26,7 +26,7 @@ int main() {
     PlockY::VectorRHS<double> guess = loader_vec.load("blk_files/test_solver.vblk");
 
     //std::vector<PlockY::Step> steps = {PlockY::Step({0}, 0),PlockY::Step({1}, 0),PlockY::Step({2}, 0)};
-    std::vector<PlockY::Step> steps = {PlockY::Step({0,1}, 0),PlockY::Step({2}, 0)};
+    std::vector<PlockY::Step> steps = {PlockY::Step({0,3}, 0),PlockY::Step({1,2}, 0)};
 
     PlockY::Solver solver(1e-6, 10);
     auto sol = solver.solve(mat, vec_RHS, guess, steps);

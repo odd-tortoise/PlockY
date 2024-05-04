@@ -7,13 +7,16 @@ namespace PlockY {
     class Step {
         private:
             std::vector<int> block_pos;
-            //BlockSolverBase solver;
-            double relax_factor;     
-     
+            std::shared_ptr<BlockSolverBase> solver;
+    
         public:
-            Step(std::vector<int> block_pos, double relax_factor) : block_pos(block_pos),  relax_factor(relax_factor) {}
+
+            Step(std::vector<int> block_pos, std::shared_ptr<BlockSolverBase> sol) : block_pos(block_pos), solver(sol) {}
+            
+            std::shared_ptr<BlockSolverBase> get_solver() const { return solver; }
+            
             const std::vector<int>& get_block_pos() const { return block_pos; }
-            //BlockSolverBase get_solver() const { return solver; }
-            double get_relax_factor() const { return relax_factor; }
+            
+            Step(std::vector<int> block_pos) : block_pos(block_pos) {}
     };
 }

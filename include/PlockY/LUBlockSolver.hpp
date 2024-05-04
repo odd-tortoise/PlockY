@@ -1,19 +1,11 @@
 #pragma once
 #include "PlockY/BlockSolverBase.hpp"
 #include <Eigen/LU>
-#include <Eigen/Core>
-#include "PlockY/Block.hpp"
-#include "PlockY/DenseBlock.hpp"
-#include "PlockY/SparseBlock.hpp"
-
-
 namespace PlockY {
-    class LUSolver : public BlockSolverBase {
-        using VectorType = Eigen::VectorXd;
-        using MatrixType = Eigen::MatrixXd;   
+    class LUSolver : public BlockSolverBase{
     public:
-        VectorType solve(const MatrixType& block, const VectorType& vector) const override {
-            Eigen::FullPivLU<MatrixType> lu(block);
+        Eigen::Matrix<double, Eigen::Dynamic, 1> solve(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& block, const Eigen::Matrix<double, Eigen::Dynamic, 1>& vector) const {
+            Eigen::FullPivLU<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> lu(block);
             return lu.solve(vector);   
         }
     };

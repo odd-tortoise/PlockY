@@ -19,7 +19,6 @@ namespace PlockY
             if (matrix.rows() != this->getRows() || matrix.cols() != this->getCols()) {
                 throw std::invalid_argument("Matrix size does not match block size");
             }
-
             // Assign the input matrix to the block's matrix
             this->matrix = matrix;
         }
@@ -27,6 +26,10 @@ namespace PlockY
         const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& getMatrix() const { return matrix; }   
 
         BlockType getType() const override { return BlockType::Dense; }
+
+        void print() const {
+            std::cout << matrix << std::endl;
+        }
 
     private:
         Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> matrix;

@@ -1,0 +1,16 @@
+0 0 120 120 mat_shop/benchmark_1/u1.csv Dense
+0 1 120 60 mat_shop/benchmark_1/ua.csv Dense
+0 2 120 60 mat_shop/benchmark_1/ub.csv Dense
+0 3 120 60 mat_shop/benchmark_1/u2.csv Dense
+1 0 60 120 mat_shop/benchmark_1/fa.csv Dense
+1 1 60 60 mat_shop/benchmark_1/f.csv Dense
+1 2 60 60 mat_shop/benchmark_1/fb.csv Dense
+1 3 60 60 mat_shop/benchmark_1/fc.csv Dense
+2 0 60 120 mat_shop/benchmark_1/ha.csv Dense
+2 1 60 60 mat_shop/benchmark_1/hb.csv Dense
+2 2 60 60 mat_shop/benchmark_1/h.csv Dense
+2 3 60 60 mat_shop/benchmark_1/hc.csv Dense
+3 0 60 120 mat_shop/benchmark_1/u3.csv Dense
+3 1 60 60 mat_shop/benchmark_1/uc.csv Dense
+3 2 60 60 mat_shop/benchmark_1/ud.csv Dense
+3 3 60 60 mat_shop/benchmark_1/u4.csv Dense

@@ -1,22 +1,11 @@
-
 #pragma once
 #include <Eigen/Core>
 
 namespace PlockY {
-
-
-/*    template<class T, template<class> class U>
-    inline constexpr bool is_instance_of_v = std::false_type{};
-
-    template<template<class> class U, class V>
-    inline constexpr bool is_instance_of_v<U<V>,U> = std::true_type{};
-*/
     class BlockSolverBase {
-        using VectorType = Eigen::VectorXd;
-        using MatrixType = Eigen::MatrixXd;     
     public:
+        BlockSolverBase() = default;
         virtual ~BlockSolverBase() = default;
-        virtual VectorType solve(const MatrixType& block, const VectorType& vector) const = 0;
+        virtual Eigen::Matrix<double, Eigen::Dynamic, 1> solve(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& block, const Eigen::Matrix<double, Eigen::Dynamic, 1>& vector) const = 0;
     };
-
-} // namespace PlockY
+}
