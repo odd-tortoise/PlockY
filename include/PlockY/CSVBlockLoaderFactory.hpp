@@ -9,7 +9,7 @@ namespace PlockY{
     template <typename Scalar>
     class CsvBlockLoader : public AbstractBlockFactory<Scalar> {
     public:
-        std::unique_ptr<DenseBlock<Scalar>> createDense(const std::string& filePath, int row, int col) override {
+        std::unique_ptr<DenseBlock<Scalar>> createDense(const std::string& filePath, size_t row, size_t col) override {
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
@@ -21,7 +21,7 @@ namespace PlockY{
             std::getline(file, line);
             std::stringstream ss(line);
             // Create an Eigen matrix to hold the data
-            Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> matrix(row, col);
+            typename DenseBlock<Scalar>::MatrixType matrix(row, col);
 
             // Read the data into the matrix
 
@@ -37,14 +37,11 @@ namespace PlockY{
                 std::getline(file, line);
             }
 
-            // Create a DenseBlock and populate it with the matrix data
-            auto block = std::make_unique<DenseBlock<Scalar>>(row, col);
-            block->setMatrix(matrix);
-            return block;
+            return std::make_unique<DenseBlock<Scalar>>(matrix);
             
         }
 
-        std::unique_ptr<SparseBlock<Scalar>> createSparse(const std::string& filePath, int row, int col) override {
+        std::unique_ptr<SparseBlock<Scalar>> createSparse(const std::string& filePath, size_t row, size_t col) override {
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
@@ -75,15 +72,12 @@ namespace PlockY{
             }
 
             // Create a SparseMatrix and populate it with the triplet list
-            Eigen::SparseMatrix<double> mat;
+            typename SparseBlock<Scalar>::MatrixType mat;
             mat.setFromTriplets(tripletList.begin(), tripletList.end());
-             // Create a SparseBlock and populate it with the matrix data
-            auto block = std::make_unique<SparseBlock<Scalar>>(mat.rows(), mat.cols());
-            block->setMatrix(mat);
-            return block;
+            return std::make_unique<SparseBlock<Scalar>>(mat);
         }
     
-        std::unique_ptr<VecBlock<Scalar>> createVector(const std::string& filePath, int row) override {
+        std::unique_ptr<VecBlock<Scalar>> createVector(const std::string& filePath, size_t row) override {
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
@@ -95,21 +89,17 @@ namespace PlockY{
             std::getline(file, line);
             std::stringstream ss(line);
             // Create an Eigen matrix to hold the data
-            Eigen::Matrix<Scalar, Eigen::Dynamic,1> matrix(row,1);
+            typename VecBlock<Scalar>::MatrixType matrix(row);
 
             // Read the data into the matrix
 
             for (int i = 0; i < row; ++i) {
                 ss.clear();
                 ss.str(line);
-                ss >> matrix(i, 0);
+                ss >> matrix(i);
                 std::getline(file, line);
             }
-
-            // Create a DenseBlock and populate it with the matrix data
-            auto block = std::make_unique<VecBlock<Scalar>>(row);
-            block->setMatrix(matrix);
-            return block;
+            return  std::make_unique<VecBlock<Scalar>>(matrix);
        }
     };
 }

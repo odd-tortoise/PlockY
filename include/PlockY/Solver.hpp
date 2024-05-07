@@ -7,16 +7,23 @@
 
 namespace PlockY {
 
-    
+
+    template <typename BlockType, typename VectorBlockType>
     class Solver {
     private:
+        using MatrixType = typename BlockType::MatrixType;
+        using VectorType = typename VectorBlockType::VectorType;
+        using Scalar = typename MatrixType::Scalar;
+
+        static_assert(std::is_base_of<Block<MatrixType>, BlockType>::value, "BlockType must be a subclass of Block");
+        
         double res = 0;
         bool toll_criteria_not_met = true;
         double toll = 1e-6;
         size_t max_iter = 1000;
         double relax_factor = 0.5;
 
-        Eigen::VectorXd relax(const Eigen::VectorXd& u_star, const Eigen::VectorXd& u_guess, double relax_factor) {
+        VectorType relax(const VectorType& u_star, const VectorType& u_guess, double relax_factor) {
             return relax_factor * u_guess + (1-relax_factor) * (u_star - u_guess);
         }
 
@@ -35,8 +42,6 @@ namespace PlockY {
             rhs.regroup(strategy);
             guess.regroup(strategy);
             std::vector<Step> steps = strategy.get_steps();
-
-      
     
             while (toll_criteria_not_met and max_iter-- > 0) { 
 
@@ -63,5 +68,6 @@ namespace PlockY {
 
             return guess;
         }
+    
     };
 }

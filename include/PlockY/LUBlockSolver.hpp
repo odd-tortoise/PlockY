@@ -9,4 +9,4 @@ namespace PlockY {
             return lu.solve(vector);   
         }
     };
-} // namespace PlockY
+} // namespace PlockY 

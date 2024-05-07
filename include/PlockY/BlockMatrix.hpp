@@ -6,15 +6,21 @@
 #include "PlockY/Step.hpp"
 #include "PlockY/DenseBlock.hpp"
 #include "PlockY/Strategy.hpp"
-#include "PlockY/regroup_helper.hpp"
+//#include "PlockY/regroup_helper.hpp"
 
 namespace PlockY {
-    template <typename Scalar>
+    template <typename BlockType>
     class BlockMatrix {
-        static_assert(std::is_arithmetic<Scalar>::value, "Scalar must be a numeric type");
+    
     private:
-        std::vector<std::tuple<int, int, std::shared_ptr<Block<Scalar>>>> blocks;
-        Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> regroup_dense(std::vector<std::vector<std::tuple<int,int>>> step){
+        using MatrixType = typename BlockType::MatrixType;
+        static_assert(std::is_base_of<Block<MatrixType>, BlockType>::value, "BlockType must be a subclass of Block");
+        std::vector<MatrixType> LHS;
+        std::vector<MatrixType> CORR;
+        std::vector<std::tuple<int, int, std::shared_ptr<BlockType>>> blocks;
+
+        /*
+        MatrixType regroup_dense(std::vector<std::vector<std::tuple<int,int>>> step){
             std::vector<std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>>> res;
             for (const auto& row : step) {
                 std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> row_mat;
@@ -33,18 +39,16 @@ namespace PlockY {
             }
             return PlockYHelper::concatenateVecOfVec<Scalar>(res);
         }
-
-        std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> LHS;
-        std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> CORR;
+        */
         
     public:
         BlockMatrix() = default;
 
-        void setBlock(int row, int col, std::unique_ptr<Block<Scalar>> block) {
+        void setBlock(int row, int col, std::unique_ptr<BlockType> block) {
             blocks.push_back(std::make_tuple(row, col, std::move(block)));
         }
         
-        std::shared_ptr<Block<Scalar>> getBlock(int row, int col) const { 
+        std::shared_ptr<BlockType> getBlock(int row, int col) const { 
             for (const auto& block : blocks) {
                 if (std::get<0>(block) == row && std::get<1>(block) == col) {
                     return std::get<2>(block) ;
@@ -53,11 +57,13 @@ namespace PlockY {
             return nullptr;
         }
    
-        bool isValid() const {
+        bool isValid() const {  
+            // Check if all the rows and columns are homogeneous in size
+            // all the blocks in the same row should have the same number of rows
+            // all the blocks in the same column should have the same number of columns
             return true;
-            //Check if all the rows and columns are homogeneous 
         }
-
+/*
         void regroup(const Strategy& strategy) {
             auto LHS_steps = strategy.get_LHS_indices();
 
@@ -70,7 +76,7 @@ namespace PlockY {
                 CORR.push_back( regroup_dense(step));
             }
         }
-
+*/
         void print() const {
             for (const auto& block : blocks) {
                 std::cout << "Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ")" << std::endl;
@@ -78,13 +84,12 @@ namespace PlockY {
             }
         }
 
-        const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& get_lhs(int i) const {
+        const MatrixType& get_lhs(int i) const {
             return LHS[i];
         }
 
-        const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& get_corr(int i) const {
+        const MatrixType& get_corr(int i) const {
             return CORR[i];
         }
-    };
-    
+    };    
 } // namespace PlockY

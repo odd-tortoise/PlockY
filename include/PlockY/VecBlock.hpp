@@ -5,35 +5,30 @@
 namespace PlockY
 {
     template <typename Scalar>
-    class VecBlock : public Block<Scalar>{ 
+    class VecBlock : public Block<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>{ 
+    private:
+        // trick per fare override di metodi con firma diversa, ha senso? è una buona pratica?
+        Scalar get(size_t row, size_t col ) const override { return this->matrix(row, col); }
+        void set(size_t row, size_t col , const Scalar& value) override { this->matrix(row, col) = value; }
+
     public:
+        using MatrixType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
+
         // Constructor
-        VecBlock(int rows) : Block<Scalar>(rows, 1), vec(rows) {}
+        VecBlock() : Block<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>() {}
+        VecBlock(size_t rows) : Block<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>(rows,1) {};
+        VecBlock(const Eigen::Matrix<Scalar, Eigen::Dynamic, 1>& matrix) : Block<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>(matrix) {}; 
 
         // Implement operations for dense blocks
-        Scalar get(int row, int col) const override { return vec(row); }
-        void set(int row,int col, const Scalar& value) override { vec(row) = value; }
+        Scalar get(size_t row) const { return this->matrix(row); }
+        void set(size_t row, const Scalar& value) { this->matrix(row) = value; }
 
-        void setMatrix(const Eigen::Matrix<Scalar, Eigen::Dynamic,1>& matrix) {
-            // Check that the matrix has the correct size
-            if ( matrix.rows() != this->getRows() || matrix.cols() != this->getCols() ){
-                throw std::invalid_argument("Matrix size does not match block size");
-            }
+        BlockTypeEnum getType() const override { return BlockTypeEnum::Vec; }
 
-            // Assign the input matrix to the block's matrix
-            this->vec = matrix;
+        void print() const override {
+            std::cout << this->matrix << std::endl;
         }
 
-        const Eigen::Matrix<Scalar, Eigen::Dynamic,1>& getMatrix() const { return vec; }   
-
-        BlockType getType() const override { return BlockType::Vec; }
-
-        void print() const {
-            std::cout << vec << std::endl;
-        }
-
-    private:
-        Eigen::Matrix<Scalar, Eigen::Dynamic, 1> vec;
     };  
 }
 
