@@ -1,0 +1,19 @@
+[Blocks]
+0 0 4 4 mat_shop/55files/sparse44.csv
+0 1 4 2 mat_shop/55files/sparse42.csv
+0 2 4 2 mat_shop/55files/sparse42.csv
+0 3 4 2 mat_shop/55files/sparse42.csv
+1 0 2 4 mat_shop/55files/sparse24.csv
+1 1 2 2 mat_shop/sparse.csv
+2 0 2 4 mat_shop/55files/sparse24.csv
+2 1 2 2 mat_shop/sparse.csv
+2 2 2 2 mat_shop/sparse.csv
+3 0 2 4 mat_shop/55files/sparse24.csv
+3 1 2 2 mat_shop/sparse.csv
+3 3 2 2 mat_shop/sparse.csv
+
+[Zero]
+1 2 2 2
+1 3 2 2
+2 3 2 2
+3 2 2 2

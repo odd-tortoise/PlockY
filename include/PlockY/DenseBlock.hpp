@@ -9,7 +9,6 @@ namespace PlockY
     public:
         using MatrixType = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
 
-
         // Constructor
         DenseBlock() : Block<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>>() {}
         DenseBlock(size_t rows, size_t cols) : Block<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>>(rows,cols) {};

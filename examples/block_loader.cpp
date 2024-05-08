@@ -2,6 +2,7 @@
 #include "PlockY/BlockMatrix.hpp"
 #include <iostream>
 #include "PlockY/TransposeOf.hpp"
+
 int main() {
     PlockY::CsvBlockLoader<double> factory;
     auto denseBlock = factory.createDense("mat_shop/dense.csv", 2, 2);
@@ -13,6 +14,7 @@ int main() {
 
     denseBlock->print();
     vecBlock->print();
+    sparseBlock->print();
     std::cout<<"fin qua ok"<<std::endl;
     
     PlockY::BlockMatrix<PlockY::DenseBlock<double>> blockMatrix;

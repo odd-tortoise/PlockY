@@ -21,6 +21,7 @@ int main() {
     auto denseBlockPtr = std::make_shared<PlockY::DenseBlock<double>>(denseBlock);
     // Example usage of TransposeOf
     auto transposedBlock = std::make_shared<PlockY::TransposeOf<PlockY::DenseBlock<double>>>(denseBlockPtr);
+    std::cout << "Type of blockPtr: " << typeid(transposedBlock).name() << std::endl;
     std::cout << "Transposed block:" << std::endl;
     std::cout<< transposedBlock->getMatrix()<<std::endl;
     transposedBlock->print();

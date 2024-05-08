@@ -28,6 +28,7 @@ namespace PlockY {
                 }
                 std::cout << std::endl;
             }
+            std::cout << std::endl;
         }
         std::cout << "RHS indices: " << std::endl;
         for (const auto& indices : RHS_indices) {
@@ -37,6 +38,7 @@ namespace PlockY {
                 }
                 std::cout << std::endl;
             }
+            std::cout << std::endl;
         }
     }
 

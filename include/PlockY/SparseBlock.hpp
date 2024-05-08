@@ -21,6 +21,7 @@ namespace PlockY
         BlockTypeEnum getType() const override { return BlockTypeEnum::Sparse; }
 
         void print() const override {
+            std::cout << "SparseBlock" << std::endl;
             for (int i = 0; i < this->rows; i++) {
                 for (int j = 0; j < this->cols; j++) {
                     std::cout << this->matrix.coeff(i, j) << " ";

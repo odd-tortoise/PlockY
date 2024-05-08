@@ -21,8 +21,6 @@ namespace PlockYHelper {
         concatenate<Scalar>(res, temp, std::forward<Args>(args)...);
     }
 
-
-
     // Concatenate hor VECTOR of Eignen matrices or vectors
     template <typename Scalar>
     DenseScalarMat<Scalar> concatenateVec(const std::vector<DenseScalarMat<Scalar>>& matrices) {

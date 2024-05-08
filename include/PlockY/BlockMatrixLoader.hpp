@@ -83,10 +83,13 @@ namespace PlockY {
                     if (!(iss >> posX >> posY >> sizeRow >> sizeCol)) {
                         break;  // Error
                     }
-
-                    std::unique_ptr<BlockType> block = std::make_unique<BlockType>(MatrixType::Zero(sizeRow, sizeCol));
-                    blockMatrix.setBlock(posX, posY, std::move(block));
-                    std::cout<<"zero "<< posX << " " << posY << " " << sizeRow << " " << sizeCol << std::endl; 
+                    if constexpr (std::is_same<BlockType, DenseBlock<Scalar>>::value) {
+                        std::unique_ptr<BlockType> block = std::make_unique<BlockType>(MatrixType::Zero(sizeRow, sizeCol));
+                        blockMatrix.setBlock(posX, posY, std::move(block));
+                    } else if constexpr (std::is_same<BlockType, SparseBlock<Scalar>>::value) {
+                        std::unique_ptr<BlockType> block = std::make_unique<BlockType>(MatrixType(sizeRow, sizeCol));
+                        blockMatrix.setBlock(posX, posY, std::move(block));
+                    }
                 }
             }
         }

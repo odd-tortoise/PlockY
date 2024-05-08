@@ -7,6 +7,7 @@
 #include "PlockY/DenseBlock.hpp"
 #include "PlockY/Strategy.hpp"
 //#include "PlockY/regroup_helper.hpp"
+#include "PlockY/Regrouper.hpp"
 
 namespace PlockY {
     template <typename BlockType>
@@ -19,27 +20,25 @@ namespace PlockY {
         std::vector<MatrixType> CORR;
         std::vector<std::tuple<int, int, std::shared_ptr<BlockType>>> blocks;
 
-        /*
-        MatrixType regroup_dense(std::vector<std::vector<std::tuple<int,int>>> step){
-            std::vector<std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>>> res;
+        MatrixType regroup_indices(std::vector<std::vector<std::tuple<int,int>>> step){
+            std::vector<MatrixType> res;
             for (const auto& row : step) {
-                std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> row_mat;
+                std::vector<MatrixType> row_mat;
                 for (const auto& block : row) {
-                    auto blockPtr = getBlock(std::get<0>(block), std::get<1>(block));
+                    std::shared_ptr<BlockType>  blockPtr = getBlock(std::get<0>(block), std::get<1>(block));
+                    std::cout << "Type of blockPtr: " << typeid(blockPtr).name() << std::endl;
+                    std::cout << "Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ")";
                     if (blockPtr == nullptr) {
                         throw std::runtime_error("Block not found");
                     }
-                    auto denseBlock = std::dynamic_pointer_cast<DenseBlock<Scalar>>(blockPtr);
-                    if (denseBlock == nullptr) {
-                        throw std::runtime_error("Block is not dense");
-                    }
-                    row_mat.push_back(denseBlock->getMatrix());
+                    row_mat.push_back(blockPtr->getMatrix());
+                    std::cout<< " size "<<blockPtr->getMatrix().rows()<<"x"<<blockPtr->getMatrix().cols()<<std::endl;
                 }
-                res.push_back(row_mat);
+
+                res.push_back(MatrixConcatenator<MatrixType>::concatenateHorizontally(row_mat));
             }
-            return PlockYHelper::concatenateVecOfVec<Scalar>(res);
+            return MatrixConcatenator<MatrixType>::concatenateVertically(res);
         }
-        */
         
     public:
         BlockMatrix() = default;
@@ -63,23 +62,24 @@ namespace PlockY {
             // all the blocks in the same column should have the same number of columns
             return true;
         }
-/*
+
         void regroup(const Strategy& strategy) {
             auto LHS_steps = strategy.get_LHS_indices();
 
             for (const auto& step : LHS_steps) {
-                LHS.push_back( regroup_dense(step));
+                LHS.push_back( regroup_indices(step));
             }
    
             auto RHS_steps = strategy.get_RHS_indices();
             for (const auto& step : RHS_steps) {
-                CORR.push_back( regroup_dense(step));
+                CORR.push_back( regroup_indices(step));
             }
         }
-*/
+
         void print() const {
             for (const auto& block : blocks) {
                 std::cout << "Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ")" << std::endl;
+                std::cout << "Type of blockPtr: " << typeid(std::get<2>(block)).name() << std::endl;
                 std::get<2>(block)->print();
             }
         }
