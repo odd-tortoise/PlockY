@@ -20,14 +20,12 @@ namespace PlockY
     };
 
     template <typename MatrixType>
-    class Block
-    {
+    class Block{
     public:
         /**
          * @brief Default constructor for the Block class.
          */
         Block() : matrix(MatrixType()){};
-        Block(size_t rows, size_t cols) : rows(rows), cols(cols), matrix(MatrixType()){};
         Block(const MatrixType &matrix) : matrix(matrix){
             rows = matrix.rows();
             cols = matrix.cols();
@@ -49,18 +47,12 @@ namespace PlockY
 
         virtual BlockTypeEnum getType() const = 0;
 
-        const MatrixType& getMatrix() const { 
-            std::cout<<"sto usando il getMatrix base"<<std::endl;
+        const MatrixType& getMatrix() const {
             return matrix; 
         };
 
-        virtual MatrixType getMatrixTransposed() const {
-            return getMatrix().transpose();
-        }
-
         void setMatrix(const MatrixType &newData){
-            if (newData.rows() != rows || newData.cols() != cols)
-            {
+            if (newData.rows() != rows || newData.cols() != cols){
                 throw std::invalid_argument("Size of new data does not match size of block");
             }
             this->matrix = newData;

@@ -1,6 +1,8 @@
 #include "PlockY/Strategy.hpp"
 #include "PlockY/BlockMatrixLoader.hpp"
 #include "PlockY/BlockMatrix.hpp"
+#include "PlockY/BlockVectorLoader.hpp"
+
 #include <iostream>
 
 int main() {
@@ -27,9 +29,12 @@ int main() {
     for (int i = 0; i < 3; i++) {
         std::cout << "LHS block " << i << std::endl;
         std::cout<< blockMatrix.get_lhs(i)<<std::endl;
-        std::cout<< "RHS block " << i << std::endl;
+    }
+    for (int i = 0; i < 3; i++) {
+        std::cout << "RHS block " << i << std::endl;
         std::cout<< blockMatrix.get_corr(i)<<std::endl;
     }
+
 
 
     std::cout<<" Strategia doppia: "<<std::endl;
@@ -40,7 +45,9 @@ int main() {
     for (int i = 0; i < 2; i++) {
         std::cout << "LHS block " << i << std::endl;
         std::cout<< blockMatrix.get_lhs(i)<<std::endl;
-        std::cout<< "RHS block " << i << std::endl;
+    }
+    for (int i = 0; i < 2; i++) {
+        std::cout << "RHS block " << i << std::endl;
         std::cout<< blockMatrix.get_corr(i)<<std::endl;
     }
 
@@ -56,7 +63,9 @@ int main() {
     for (int i = 0; i < 3; i++) {
         std::cout << "LHS block " << i << std::endl;
         std::cout<< Eigen::MatrixXd(blockMatrixSparse.get_lhs(i))<<std::endl;
-        std::cout<< "RHS block " << i << std::endl;
+    }
+    for (int i = 0; i < 3; i++) {
+        std::cout << "RHS block " << i << std::endl;
         std::cout<< Eigen::MatrixXd(blockMatrixSparse.get_corr(i))<<std::endl;
     }
 
@@ -68,8 +77,34 @@ int main() {
     for (int i = 0; i < 2; i++) {
         std::cout << "LHS block " << i << std::endl;
         std::cout<< Eigen::MatrixXd(blockMatrixSparse.get_lhs(i))<<std::endl;
-        std::cout<< "RHS block " << i << std::endl;
+    }
+    for (int i = 0; i < 2; i++) {
+        std::cout << "RHS block " << i << std::endl;
         std::cout<< Eigen::MatrixXd(blockMatrixSparse.get_corr(i))<<std::endl;
+    }
+
+
+    std::cout<<"################VECTOR######################"<<std::endl;
+
+    auto blockVector = PlockY::BlockVectorLoader::load<PlockY::VecBlock<double>>("blk_files/5b5_withNonSquareBlocks_vector.vblk");
+    blockVector.print();
+
+    std::cout<<" Strategia tripla: "<<std::endl;
+    strategy_tripla.print();
+    std::cout<<" Regrouping:"<<std::endl;
+    blockVector.regroup(strategy_tripla);
+    for (int i = 0; i < 3; i++) {
+        std::cout << "Vector block " << i << std::endl;
+        std::cout<< blockVector.get_rhs(i)<<std::endl;
+    }
+
+    std::cout<<" Strategia doppia: "<<std::endl;
+    strategy_doppia.print();
+    std::cout<<" Regrouping:"<<std::endl;
+    blockVector.regroup(strategy_doppia);
+    for (int i = 0; i < 2; i++) {
+        std::cout << "Vector block " << i << std::endl;
+        std::cout<< blockVector.get_rhs(i)<<std::endl;
     }
 
     return 0;   

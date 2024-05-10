@@ -5,22 +5,14 @@
 #include "PlockY/DenseBlock.hpp"
 #include "PlockY/SparseBlock.hpp"
 #include "PlockY/VecBlock.hpp"
-#include "PlockY/TransposeOf.hpp" // Add this line
 
 int main() {
 
     // Example usage of DenseBlock
-    Eigen::MatrixXd dense(2, 2);
-    dense << 10, 20,
-            30, 40;
-    PlockY::DenseBlock<double> denseBlock(2, 2);
-    denseBlock.setMatrix(dense);
-    std::cout<<"Dense block:"<<std::endl;
-    std::cout<<denseBlock.getMatrix()<<std::endl;
 
-    auto denseBlockPtr = std::make_shared<PlockY::DenseBlock<double>>(denseBlock);
+    //auto denseBlockPtr = std::make_shared<PlockY::DenseBlock<double>>(denseBlock);
     // Example usage of TransposeOf
-    auto transposedBlock = std::make_shared<PlockY::TransposeOf<PlockY::DenseBlock<double>>>(denseBlockPtr);
+    /*auto transposedBlock = std::make_shared<PlockY::TransposeOf<PlockY::DenseBlock<double>>>(denseBlockPtr);
     std::cout << "Type of blockPtr: " << typeid(transposedBlock).name() << std::endl;
     std::cout << "Transposed block:" << std::endl;
     std::cout<< transposedBlock->getMatrix()<<std::endl;
@@ -54,6 +46,6 @@ int main() {
     vecBlock.setMatrix(vec);
 
     vecBlock.print();
-
+    */
     return 0;
 }

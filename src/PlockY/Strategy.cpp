@@ -3,6 +3,7 @@
 namespace PlockY {
 
     bool Strategy::isValidStepsVector() const {
+        
         return true;
     }
 
@@ -79,38 +80,20 @@ namespace PlockY {
             LHS_indices.push_back(indices);
         }
 
-
-        //RHS block indices -> block positions X {mergedVector\block positions}
-        /*
         for (const Step& step : steps) {
             std::vector<int> indices = mergedVector;
+            std::vector<std::vector<std::tuple<int,int>>> indices_tuples;
             for (const auto& block_pos : step.get_block_pos()) {
-                indices.erase(std::remove(indices.begin(), indices.end(), block_pos), indices.end());
-            }
-            std::vector<std::tuple<int,int>> indices_tuples;
-            for (const auto& block_pos : step.get_block_pos()) {
+                std::vector<std::tuple<int,int>> row;
                 for (const auto& index : indices) {
-                    indices_tuples.push_back(std::make_tuple(block_pos, index));
+                    if (std::find(step.get_block_pos().begin(), step.get_block_pos().end(), index) == step.get_block_pos().end()) {
+                        row.push_back(std::make_tuple(block_pos, index));
+                    }
                 }
+                indices_tuples.push_back(row);
             }
             RHS_indices.push_back(indices_tuples);
         }
-        */
-
-            for (const Step& step : steps) {
-                std::vector<int> indices = mergedVector;
-                std::vector<std::vector<std::tuple<int,int>>> indices_tuples;
-                for (const auto& block_pos : step.get_block_pos()) {
-                    std::vector<std::tuple<int,int>> row;
-                    for (const auto& index : indices) {
-                        if (std::find(step.get_block_pos().begin(), step.get_block_pos().end(), index) == step.get_block_pos().end()) {
-                            row.push_back(std::make_tuple(block_pos, index));
-                        }
-                    }
-                    indices_tuples.push_back(row);
-                }
-                RHS_indices.push_back(indices_tuples);
-            }
 
     }
 

@@ -62,6 +62,6 @@ namespace PlockY {
              * @param step The step for which to get the complementary blocks.
              * @return The complementary blocks for the given step.
              */
-            const std::vector<int> get_complementary_blocks(const Step& step) const; //in realtà si può pre-calcolare come gli altri
+            const std::vector<int> get_complementary_blocks(const Step& step) const; 
     };
 }

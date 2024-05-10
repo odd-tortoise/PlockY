@@ -10,9 +10,8 @@ namespace PlockY
         using MatrixType = Eigen::SparseMatrix<Scalar>;
 
         // Constructor
-        SparseBlock() : Block<Eigen::SparseMatrix<Scalar>>() {}
-        SparseBlock(size_t rows, size_t cols) : Block<Eigen::SparseMatrix<Scalar>>(rows,cols) {};
-        SparseBlock(const Eigen::SparseMatrix<Scalar>& matrix) : Block<Eigen::SparseMatrix<Scalar>>(matrix) {};
+        SparseBlock() : Block<MatrixType>() {}
+        SparseBlock(const MatrixType& matrix) : Block<MatrixType>(matrix) {};
 
         // Implement operations for sparse blocks
         Scalar get(size_t row, size_t col) const override { return this->matrix.coeff(row, col); }

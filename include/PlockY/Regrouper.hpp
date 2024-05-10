@@ -9,12 +9,12 @@ namespace PlockY {
     public:
         static MatrixType concatenateHorizontally(const std::vector<MatrixType>& matrices) {
             // Default implementation
-            throw std::logic_error("Not implemented for this matrix type.");
+            throw std::logic_error("Hor concatenation not implemented for this matrix type.");
         }
 
         static MatrixType concatenateVertically(const std::vector<MatrixType>& matrices) {
             // Default implementation
-            throw std::logic_error("Not implemented for this matrix type.");
+            throw std::logic_error("Vertical concatenation not implemented for this matrix type.");
         }
     };
 
@@ -78,6 +78,19 @@ public:
 // Specialization for Eigen::Matrix (dense matrix)
 template <typename Scalar>
 class MatrixConcatenator<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> {
+
+private:
+    // Concatenate matrices horizontally with variadic templates, non utilizzato. Lascio che può essere utile
+    void concatenate(Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& res, const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& A) {
+        res = A;
+    }
+    template <typename... Args>
+    void concatenate(Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& res, const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& A, const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& B, Args&&... args) {
+        Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> temp = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>::Zero(A.rows(), A.cols() + B.cols());
+        temp << A, B;
+        concatenate(res, temp, std::forward<Args>(args)...);
+    }
+
 public:
     static Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> concatenateHorizontally(const std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>>& matrices) {
         Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> res = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>::Zero(matrices[0].rows(), 0);
@@ -93,6 +106,23 @@ public:
         Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> res = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>::Zero(0, matrices[0].cols());
         for (const auto& matrix : matrices) {
             Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> temp = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>::Zero(res.rows() + matrix.rows(), matrix.cols());
+            temp << res, matrix;
+            res = temp;
+        }
+        return res;
+    }
+};
+
+// Specialization for Eigen::Matrix (dense matrix)
+template <typename Scalar>
+class MatrixConcatenator<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>> {
+
+public:
+
+    static Eigen::Matrix<Scalar, Eigen::Dynamic,1> concatenateVertically(const std::vector<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>& matrices) {
+        Eigen::Matrix<Scalar, Eigen::Dynamic, 1> res = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>::Zero(0);
+        for (const auto& matrix : matrices) {
+            Eigen::Matrix<Scalar, Eigen::Dynamic,1> temp = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>::Zero(res.rows() + matrix.rows(), 1);
             temp << res, matrix;
             res = temp;
         }

@@ -8,6 +8,7 @@ namespace PlockY {
     class TransposeOf : public BlockClass {
     private:
 
+
     public:
         TransposeOf(std::shared_ptr<BlockClass> block) : block(block) {
             static_assert(std::is_base_of<Block<typename BlockClass::MatrixType>, BlockClass>::value, "BlockClass must be a subclass of Block");
@@ -15,9 +16,10 @@ namespace PlockY {
         virtual ~TransposeOf() = default;  
 
         // devo restiture una copia della matrice trasposta, non posso fare overriding
-        const typename BlockClass::MatrixType& getMatrix() const {
+        const typename BlockClass::MatrixType& getMatrix() override{
             std::cout<<"sto usando il getMatrix Trasposto"<<std::endl;
-            return block->getMatrix();
+            computeTranspose();
+            return transpose;
         }
 
         void print() const {
@@ -28,6 +30,10 @@ namespace PlockY {
             }
         }  
     private:
+        void computeTranspose() {
+            this->transpose = block->getMatrix().transpose().eval();
+        }
         std::shared_ptr<BlockClass> block;
+        typename BlockClass::MatrixType transpose;
     };
 } // namespace PlocKy

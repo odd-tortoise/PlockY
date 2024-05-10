@@ -7,10 +7,13 @@
 1 1 2 2 mat_shop/sparse.csv
 2 0 2 4 mat_shop/55files/sparse24.csv
 2 1 2 2 mat_shop/sparse.csv
-2 2 2 2 mat_shop/sparse.csv
 3 0 2 4 mat_shop/55files/sparse24.csv
 3 1 2 2 mat_shop/sparse.csv
 3 3 2 2 mat_shop/sparse.csv
+
+
+[Transpose]
+2 2 2 2 2 1
 
 [Zero]
 1 2 2 2

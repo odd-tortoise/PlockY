@@ -35,10 +35,11 @@ namespace PlockY {
 
         int pos,size;
         std::string blockFilePath;
+        std::string key;
 
         while (std::getline(file, line)) {
             std::istringstream lineStream(line);
-            std::string key, equals;
+            
 
             if (line[0] == '[') {
                 key = line.substr(1, line.find(']') - 1);
@@ -52,7 +53,7 @@ namespace PlockY {
                     }
                     // Determine the file extension
                     std::string extension = PlockYHelper::getFileExtension(blockFilePath);
-                    std::unique_ptr<AbstractBlockFactory<Scalar>> factory =  PlockYHelper::createFactory<Scalar>(extension);               
+                    auto factory = PlockYHelper::FactoryRegistry<Scalar>::getInstance().getFactory(extension);            
                     std::unique_ptr<BlockType> block = factory->createVector(blockFilePath, size);
                     blockVec.setBlock(pos, std::move(block));     
                 }

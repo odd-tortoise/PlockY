@@ -35,9 +35,11 @@ namespace PlockY {
 
         Solver (double toll, size_t max_iter, double relax) : toll(toll), max_iter(max_iter), relax_factor(relax) {}
 
-        template <typename Scalar>
-        BlockVector<Scalar> solve(BlockMatrix<Scalar>& matrix, BlockVector<Scalar>& rhs, BlockVector<Scalar>& guess, const Strategy& strategy) {
-
+        BlockVector<VectorBlockType> solve(BlockMatrix<BlockType>& matrix, BlockVector<Scalar>& rhs, BlockVector<Scalar>& guess, const Strategy& strategy) {
+                       if (strategy.mergedVector.size() != blocks.size(){
+                throw std::runtime_error("Strategy Vector is not valid");
+            }
+            
             matrix.regroup(strategy);
             rhs.regroup(strategy);
             guess.regroup(strategy);

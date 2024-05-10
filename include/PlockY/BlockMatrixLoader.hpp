@@ -8,20 +8,17 @@
 #include <fstream>
 #include <iostream>
 #include "PlockY/loader_helper.hpp"
-#include "PlockY/TransposeOf.hpp"
 #include <typeinfo>
 
 namespace PlockY {
-    class BlockMatrixLoader {
-        
-    public:
 
+    class BlockMatrixLoader {  
+    public:
         template <typename BlockType>
         static BlockMatrix<BlockType> load(const std::string& blkFilePath) {
         
         using MatrixType = typename BlockType::MatrixType;
         using Scalar = typename MatrixType::Scalar;
-        
         static_assert(std::is_base_of<Block<MatrixType>, BlockType>::value, "BlockClass must be a subclass of Block");
 
         std::ifstream file(blkFilePath);
@@ -36,21 +33,22 @@ namespace PlockY {
         std::string word;
         BlockMatrix<BlockType> blockMatrix;
 
-        // Define a lambda function that creates a block
-
         int posX, posY, sizeRow, sizeCol;
         int posTX, posTY;
         std::string blockFilePath;
-        std::string blocks_spec;
+        std::unique_ptr<BlockType> block = nullptr;
+        std::string key;
 
         while (std::getline(file, line)) {
             std::istringstream lineStream(line);
-            std::string key, equals;
-
-
+           
             if (line[0] == '[') {
                 key = line.substr(1, line.find(']') - 1);
             }
+            if(line.empty()){
+                continue;
+            }
+
             if (key == "Blocks") {
                 while (std::getline(file, line)) {
                     std::istringstream iss(line);
@@ -59,15 +57,13 @@ namespace PlockY {
                     }
                     // Determine the file extension
                     std::string extension = PlockYHelper::getFileExtension(blockFilePath);
-                    std::unique_ptr<AbstractBlockFactory<Scalar>> factory =  PlockYHelper::createFactory<Scalar>(extension);
-
-                    std::unique_ptr<BlockType> block = nullptr;
+                    auto factory = PlockYHelper::FactoryRegistry<Scalar>::getInstance().getFactory(extension);
                     if constexpr (std::is_same<BlockType, DenseBlock<Scalar>>::value) {
                         block = factory->createDense(blockFilePath, sizeRow, sizeCol);
                     } else if constexpr (std::is_same<BlockType, SparseBlock<Scalar>>::value) {
                         block = factory->createSparse(blockFilePath, sizeRow, sizeCol);
                     }
-                    blockMatrix.setBlock(posX, posY, std::move(block));                   
+                    blockMatrix.setBlock(posX, posY, std::move(block), BlockSpec::Normal);                   
                 }
             } else if (key == "Transpose") {
                 while (std::getline(file, line)) {
@@ -75,7 +71,7 @@ namespace PlockY {
                     if (!(iss >> posX >> posY >> sizeRow >> sizeCol >> posTX >> posTY)) {
                         break;  // Error
                     }
-                    blockMatrix.setBlock(posX, posY, std::make_unique<TransposeOf<BlockType>>(blockMatrix.getBlock(posTX, posTY)));
+                    blockMatrix.setBlock(posX, posY, blockMatrix.getBlock(posTX, posTY), BlockSpec::Transpose);
                 }
             } else if (key == "Zero") {
                 while (std::getline(file, line)) {
@@ -83,20 +79,23 @@ namespace PlockY {
                     if (!(iss >> posX >> posY >> sizeRow >> sizeCol)) {
                         break;  // Error
                     }
+                    std::unique_ptr<BlockType> block = nullptr;
                     if constexpr (std::is_same<BlockType, DenseBlock<Scalar>>::value) {
-                        std::unique_ptr<BlockType> block = std::make_unique<BlockType>(MatrixType::Zero(sizeRow, sizeCol));
-                        blockMatrix.setBlock(posX, posY, std::move(block));
+                        block = std::make_unique<BlockType>(MatrixType::Zero(sizeRow, sizeCol));
+                        blockMatrix.setBlock(posX, posY, std::move(block), BlockSpec::Normal);
                     } else if constexpr (std::is_same<BlockType, SparseBlock<Scalar>>::value) {
-                        std::unique_ptr<BlockType> block = std::make_unique<BlockType>(MatrixType(sizeRow, sizeCol));
-                        blockMatrix.setBlock(posX, posY, std::move(block));
+                        block = std::make_unique<BlockType>(MatrixType(sizeRow, sizeCol));
+                        blockMatrix.setBlock(posX, posY, std::move(block), BlockSpec::Normal);
                     }
                 }
             }
         }
 
+        if( ! blockMatrix.isValid()){
+            throw std::runtime_error("Invalid block matrix" + blkFilePath);
+        }
+        
         return blockMatrix;
         }
-    
-    
     };
 }

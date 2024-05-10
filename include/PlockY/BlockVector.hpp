@@ -12,29 +12,23 @@ namespace PlockY {
     class BlockVector {
     private:
         using MatrixType = typename BlockType::MatrixType;
+        static_assert(std::is_base_of<Block<MatrixType>, BlockType>::value, "BlockType must be a subclass of Block");
+        
         std::vector<std::tuple<int, std::shared_ptr<BlockType>>> vec_blocks;
-
         std::vector<MatrixType> RHS;
-        /*
-        MatrixType regroup_vectors(std::vector<int> step) {
-            Eigen::Matrix<Scalar, Eigen::Dynamic, 1> res = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>::Zero(0);
+        
+        MatrixType regroup_indices(std::vector<int> step) {
+            std::vector<MatrixType> res;
             for (const auto& pos : step) {
                 auto blockPtr = getBlock(pos);
                 if (blockPtr == nullptr) {
                     throw std::runtime_error("Block not found");
                 }
-                auto vecBlock = std::dynamic_pointer_cast<VecBlock<Scalar>>(blockPtr);
-                if (vecBlock == nullptr) {
-                    throw std::runtime_error("Block is not dense");
-                }
-                Eigen::Matrix<Scalar, Eigen::Dynamic, 1> block = vecBlock->getMatrix();
-                Eigen::Matrix<Scalar, Eigen::Dynamic, 1> temp = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>::Zero(res.size() + block.size());
-                temp << res, block;
-                res = temp;
+                res.push_back(blockPtr->getMatrix());
             }
-            return res;
+            return MatrixConcatenator<MatrixType>::concatenateVertically(res);
         }
-*/
+
     public:
         BlockVector() = default;
 
@@ -50,18 +44,18 @@ namespace PlockY {
             }
             return nullptr;
         }
-/*
+
         void regroup(const Strategy& strategy) {
+            RHS.clear();
             auto steps = strategy.get_steps();
             for (const auto& step : steps) {
-                RHS.push_back( regroup_vectors(step.get_block_pos()));
+                RHS.push_back( regroup_indices(step.get_block_pos()));
             }
         }
-*/
+
         void print() {
             for (const auto& block : vec_blocks) {
-                std::cout << "Position: " << std::get<0>(block) << std::endl;
-                std::cout << "Block: " << std::endl;
+                std::cout << "Position: " << std::get<0>(block) << " Block: " << std::endl;
                 std::get<1>(block)->print();
             }
         }
