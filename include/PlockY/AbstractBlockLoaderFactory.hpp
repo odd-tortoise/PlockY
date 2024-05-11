@@ -18,7 +18,7 @@ namespace PlockY {
     public:
         virtual std::unique_ptr<DenseBlock<Scalar>> createDense(const std::string& filePath, size_t row, size_t col) = 0;
         virtual std::unique_ptr<SparseBlock<Scalar>> createSparse(const std::string& filePath, size_t row, size_t col) = 0;
-        virtual std::unique_ptr<VecBlock<Scalar>> createVector(const std::string& filePath, size_t row) = 0;
+        virtual std::unique_ptr<VectorBlock<Scalar>> createVector(const std::string& filePath, size_t row) = 0;
 
         virtual ~AbstractBlockFactory() = default;
     };

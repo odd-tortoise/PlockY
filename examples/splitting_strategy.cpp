@@ -7,8 +7,8 @@ int main() {
     PlockY::Strategy strategy(steps);
     strategy.print();
     
-    auto comple1 = strategy.get_complementary_blocks(step1);
-    auto comple2 = strategy.get_complementary_blocks(step2);
+    auto comple1 = strategy.get_complementary_blocks(0);
+    auto comple2 = strategy.get_complementary_blocks(1);
 
     std::cout << "STRATEGY 1: Complementary blocks for step 1: ";
     for (auto i : comple1) {
@@ -36,9 +36,9 @@ int main() {
     PlockY::Strategy strategy_tripla(steps_tripli);
     strategy_tripla.print();
 
-    auto comple_1 = strategy_tripla.get_complementary_blocks(step_1);
-    auto comple_2 = strategy_tripla.get_complementary_blocks(step_2);
-    auto comple_3 = strategy_tripla.get_complementary_blocks(step_3);
+    auto comple_1 = strategy_tripla.get_complementary_blocks(0);
+    auto comple_2 = strategy_tripla.get_complementary_blocks(1);
+    auto comple_3 = strategy_tripla.get_complementary_blocks(2);
 
     std::cout << "STRATEGY 2: Complementary blocks for step 1: ";
     for (auto i : comple_1) {

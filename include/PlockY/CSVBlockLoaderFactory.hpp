@@ -72,7 +72,7 @@ namespace PlockY{
             return std::make_unique<SparseBlock<Scalar>>(mat);
         }
     
-        std::unique_ptr<VecBlock<Scalar>> createVector(const std::string& filePath, size_t row) override {
+        std::unique_ptr<VectorBlock<Scalar>> createVector(const std::string& filePath, size_t row) override {
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
@@ -84,7 +84,7 @@ namespace PlockY{
             std::getline(file, line);
             std::stringstream ss(line);
             // Create an Eigen matrix to hold the data
-            typename VecBlock<Scalar>::MatrixType matrix(row);
+            typename VectorBlock<Scalar>::MatrixType matrix(row);
 
             // Read the data into the matrix
 
@@ -94,7 +94,7 @@ namespace PlockY{
                 ss >> matrix(i);
                 std::getline(file, line);
             }
-            return  std::make_unique<VecBlock<Scalar>>(matrix);
+            return  std::make_unique<VectorBlock<Scalar>>(matrix);
        }
     };
 }

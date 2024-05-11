@@ -2,11 +2,6 @@
 
 namespace PlockY {
 
-    bool Strategy::isValidStepsVector() const {
-        
-        return true;
-    }
-
     void Strategy::print() const {
         for (const Step& step : steps) {
             std::cout << "Step with blocks: ";
@@ -43,7 +38,7 @@ namespace PlockY {
         }
     }
 
-    const std::vector<int> Strategy::get_complementary_blocks(const Step& step) const {
+    const std::vector<int> Strategy::complementary_blocks(const Step& step) const {
         std::vector<int> indices;
         for(int i = 0; i < mergedVector.size(); i++) {
             if(std::find(step.get_block_pos().begin(), step.get_block_pos().end(), mergedVector[i]) == step.get_block_pos().end()){
@@ -54,12 +49,6 @@ namespace PlockY {
     }
 
     Strategy::Strategy(const std::vector<Step>& steps) : steps(steps) {
-
-        //check valididty of the steps
-        if (!isValidStepsVector()) {
-            throw std::invalid_argument("Invalid steps vector provided.");
-        }
-
         //merge all the block positions
         for (const Step& step : steps) {
             mergedVector.insert(mergedVector.end(), step.get_block_pos().begin(), step.get_block_pos().end());
@@ -93,6 +82,10 @@ namespace PlockY {
                 indices_tuples.push_back(row);
             }
             RHS_indices.push_back(indices_tuples);
+        }
+
+        for (const Step& step : steps) {
+            complementary.push_back(complementary_blocks(step));
         }
 
     }

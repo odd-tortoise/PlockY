@@ -1,11 +1,36 @@
 #pragma once
-#include <Eigen/Core>
+
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+
 
 namespace PlockY {
-    class BlockSolverBase {
-    public:
-        BlockSolverBase() = default;
-        virtual ~BlockSolverBase() = default;
-        virtual Eigen::Matrix<double, Eigen::Dynamic, 1> solve(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& block, const Eigen::Matrix<double, Eigen::Dynamic, 1>& vector) const = 0;
-    };
-}
+
+template <typename MatrixType, typename VectorType>
+class BlockSolverBase {
+public:
+    virtual VectorType solveBlock(const MatrixType& matrix, const VectorType& vector) = 0;
+};
+
+// Specialization for dense matrices
+template <typename Scalar>
+class EigenDenseLU : public BlockSolverBase<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>, Eigen::Matrix<Scalar, Eigen::Dynamic, 1>> {
+public:
+    Eigen::Matrix<Scalar, Eigen::Dynamic, 1> solveBlock(const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>& matrix, const Eigen::Matrix<Scalar, Eigen::Dynamic, 1>& vector) override {
+        Eigen::FullPivLU<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> lu(matrix);
+        return lu.solve(vector);
+    }
+};
+
+// Specialization for sparse matrices
+template <typename Scalar>
+class EigenSparseLU : public BlockSolverBase<Eigen::SparseMatrix<Scalar>, Eigen::Matrix<Scalar, Eigen::Dynamic, 1>> {
+public:
+    Eigen::Matrix<Scalar, Eigen::Dynamic, 1> solveBlock(const Eigen::SparseMatrix<Scalar>& matrix, const Eigen::Matrix<Scalar, Eigen::Dynamic, 1>& vector) override {
+        Eigen::SparseLU<Eigen::SparseMatrix<Scalar>> lu(matrix);
+        return lu.solve(vector);
+    }
+};
+
+
+}  // namespace PlockY

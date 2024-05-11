@@ -2,6 +2,7 @@
 #include <iostream>
 #include "PlockY/Block.hpp"
 #include <vector>
+#include <set>
 #include <memory>
 #include "PlockY/Step.hpp"
 #include "PlockY/DenseBlock.hpp"
@@ -49,6 +50,18 @@ namespace PlockY {
                 res.push_back(MatrixConcatenator<MatrixType>::concatenateHorizontally(row_mat));
             }
             return MatrixConcatenator<MatrixType>::concatenateVertically(res);
+        }
+
+        bool isValidStrategy(const Strategy& strat) const {
+            std::set<int> blockSet;
+            for (const auto& block : blocks) {
+                blockSet.insert(std::get<0>(block));
+                blockSet.insert(std::get<1>(block));
+            }
+
+            std::vector<int> mergedAndSorted(blockSet.begin(), blockSet.end());
+
+            return strat.get_merged() == mergedAndSorted;
         }
         
     public:
@@ -99,10 +112,24 @@ namespace PlockY {
                 colSizes[col] = blockPtr->getCols();
             }
 
+
+            // checks if blocks are unique
+            std::set<std::pair<int, int>> blockPairs;
+            for (const auto& block : blocks) {
+                blockPairs.insert({std::get<0>(block), std::get<1>(block)});
+            }
+
+            if (blockPairs.size() != blocks.size()) return false;
+
             return true;
         }
 
         void regroup(const Strategy& strategy) {
+            
+            if (!isValidStrategy(strategy)){
+                throw std::runtime_error("Strategy not valid for the matrix");
+            }
+
             LHS.clear();
             CORR.clear();
             auto LHS_steps = strategy.get_LHS_indices();

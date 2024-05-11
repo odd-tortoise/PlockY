@@ -86,7 +86,7 @@ int main() {
 
     std::cout<<"################VECTOR######################"<<std::endl;
 
-    auto blockVector = PlockY::BlockVectorLoader::load<PlockY::VecBlock<double>>("blk_files/5b5_withNonSquareBlocks_vector.vblk");
+    auto blockVector = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("blk_files/5b5_withNonSquareBlocks_vector.vblk");
     blockVector.print();
 
     std::cout<<" Strategia tripla: "<<std::endl;

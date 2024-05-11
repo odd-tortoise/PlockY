@@ -5,14 +5,14 @@
 namespace PlockY
 {
     template <typename Scalar>
-    class VecBlock : public Block<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>{ 
+    class VectorBlock : public Block<Eigen::Matrix<Scalar, Eigen::Dynamic, 1>>{ 
 
     public:
         using MatrixType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
         // Constructor
-        VecBlock() : Block<MatrixType>() {}
-        VecBlock(const MatrixType& matrix) : Block<MatrixType>(matrix) {}; 
+        VectorBlock() : Block<MatrixType>() {}
+        VectorBlock(const MatrixType& matrix) : Block<MatrixType>(matrix) {}; 
 
         // Implement operations for dense blocks
         Scalar get(size_t row) const { return this->matrix(row); }

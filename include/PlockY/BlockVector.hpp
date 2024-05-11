@@ -16,8 +16,8 @@ namespace PlockY {
         
         std::vector<std::tuple<int, std::shared_ptr<BlockType>>> vec_blocks;
         std::vector<MatrixType> RHS;
-        
-        MatrixType regroup_indices(std::vector<int> step) {
+
+        MatrixType regroup_indices(std::vector<int> step) const{
             std::vector<MatrixType> res;
             for (const auto& pos : step) {
                 auto blockPtr = getBlock(pos);
@@ -27,6 +27,17 @@ namespace PlockY {
                 res.push_back(blockPtr->getMatrix());
             }
             return MatrixConcatenator<MatrixType>::concatenateVertically(res);
+        }
+
+        bool isValidStrategy(const Strategy& strat) const {
+            std::set<int> blockSet;
+            for (const auto& block : vec_blocks) {
+                blockSet.insert(std::get<0>(block));
+            }
+
+            std::vector<int> mergedAndSorted(blockSet.begin(), blockSet.end());
+
+            return strat.get_merged() == mergedAndSorted;
         }
 
     public:
@@ -46,7 +57,11 @@ namespace PlockY {
         }
 
         void regroup(const Strategy& strategy) {
+            if (!isValidStrategy(strategy)){
+                throw std::runtime_error("Strategy not valid for the vector");
+            }
             RHS.clear();
+ 
             auto steps = strategy.get_steps();
             for (const auto& step : steps) {
                 RHS.push_back( regroup_indices(step.get_block_pos()));
@@ -60,8 +75,9 @@ namespace PlockY {
             }
         }
 
-/*
-        void update(const Step& step, int i, const Eigen::Matrix<Scalar, Eigen::Dynamic, 1>& u_star) {
+
+        void update(const Step& step, int i, const MatrixType& u_star) {
+            //update the guess
             int start = 0;
             for (const auto& pos : step.get_block_pos()) {
                 for (auto& tuple : vec_blocks) {
@@ -71,37 +87,23 @@ namespace PlockY {
                     }
                 }
             }
+
+            //update the RHS
             RHS[i] = u_star;
         }
-*/
+
+        int get_size() const {
+            return vec_blocks.size();
+        }
+
 
         const MatrixType& get_rhs(int i) const {
             return RHS[i];
         }
 
-/*
-        const MatrixType get_rhs_compl(const Strategy& strategy, const Step& step) const {
-            MatrixType res = MatrixType::Zero(0);
-            auto indices = strategy.get_complementary_blocks(step);
-
-            for (const auto& index : indices) {
-                auto blockPtr = getBlock(index);
-                if (blockPtr == nullptr) {
-                    throw std::runtime_error("Block not found");
-                }
-                auto vecBlock = std::dynamic_pointer_cast<VecBlock<Scalar>>(blockPtr);
-                if (vecBlock == nullptr) {
-                    throw std::runtime_error("Block is not dense");
-                }
-                Eigen::Matrix<Scalar, Eigen::Dynamic, 1> block = vecBlock->getMatrix();
-                Eigen::Matrix<Scalar, Eigen::Dynamic, 1> temp = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>::Zero(res.size() + block.size());
-                temp << res, block;
-                res = temp;
-            }
-
-            return res;
+        const MatrixType get_rhs_compl(const Strategy& strat, int i) const {
+            return regroup_indices(strat.get_complementary_blocks(i));
         }
-*/
 
 
         //utility function to convert the block vector to string for debugging

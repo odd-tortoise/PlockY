@@ -1,6 +1,5 @@
 [Blocks]
 0 2 vec_shop/ones2.csv
-1 2 vec_shop/2.csv
 
 [Zero]
-2 2
+1 2

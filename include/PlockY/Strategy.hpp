@@ -20,13 +20,7 @@ namespace PlockY {
             std::vector<int> mergedVector; /**< The merged vector of all steps. */
             std::vector<std::vector<std::vector<std::tuple<int,int>>>> LHS_indices; /**< The indices of the left-hand side blocks for each step. */
             std::vector<std::vector<std::vector<std::tuple<int,int>>>> RHS_indices; /**< The indices of the right-hand side blocks for each step. */
-
-            /**
-             * @brief Checks if the steps vector is valid.
-             * @return True if the steps vector is valid, false otherwise.
-             */
-            bool isValidStepsVector() const;  //TODO implementare
-
+            std::vector<std::vector<int>> complementary; /**< The complementary blocks for each step. */
         public:
             /**
              * @brief Constructs a Strategy object with the given steps.
@@ -39,6 +33,10 @@ namespace PlockY {
              * @return The steps in the strategy.
              */
             const std::vector<Step>& get_steps() const { return steps; }
+
+            const std::vector<int>& get_merged() const { return mergedVector; }
+
+            const std::vector<int>& get_complementary_blocks(int i) const { return complementary[i]; }
 
             /**
              * @brief Prints the strategy.
@@ -62,6 +60,6 @@ namespace PlockY {
              * @param step The step for which to get the complementary blocks.
              * @return The complementary blocks for the given step.
              */
-            const std::vector<int> get_complementary_blocks(const Step& step) const; 
+            const std::vector<int> complementary_blocks(const Step& step) const; 
     };
 }
