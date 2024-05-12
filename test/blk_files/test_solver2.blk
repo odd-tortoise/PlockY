@@ -1,9 +1,0 @@
-0 0 2 2 mat_shop/dense22.csv Dense
-0 1 2 2 mat_shop/dense22_2.csv Dense
-0 2 2 2 mat_shop/zeros_22.csv Dense
-1 0 2 2 mat_shop/dense22.csv Dense
-1 1 2 2 mat_shop/dense22_3.csv Dense
-1 2 2 2 mat_shop/zeros_22.csv Dense
-2 0 2 2 mat_shop/dense22.csv Dense
-2 1 2 2 mat_shop/zeros_22.csv Dense
-2 2 2 2 mat_shop/dense22_2.csv Dense

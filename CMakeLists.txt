@@ -13,6 +13,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # visual studio and Xcode organization
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+option(BUILD_EXAMPLES "Build the examples" ON)
+option(BUILD_TESTS "Build the tests" ON)
+option(BUILD_DOCS "Build the documentation" ON)
+
+# Submodules for dependencies (just eigen for now)
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
 # Update submodules as needed
@@ -28,18 +33,27 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     endif()
 endif()
 
-  # Docs only available if this is the main app
-find_package(Doxygen)
-if(Doxygen_FOUND)
-    add_subdirectory(docs)
-else()
-    message(STATUS "Doxygen not found, not building docs")
-endif()
-
-
-# Include Eigen headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extra/eigen)
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 add_subdirectory(src)
-#add_subdirectory(test)
-add_subdirectory(examples)
+
+if (BUILD_EXAMPLES)
+    message(STATUS "Building Examples.")
+    add_subdirectory(examples)
+endif()
+
+if (BUILD_TESTS)
+    message(STATUS "Building tests.")
+    include(CTest)
+    add_subdirectory(test)
+endif()
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND AND BUILD_DOCS)
+    message(STATUS "Building Docs.")
+    add_subdirectory(docs)
+else()
+    message("Doxygen need to be installed to generate the doxygen documentation")
+endif()

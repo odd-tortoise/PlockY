@@ -1,12 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
-#include "PlockY/test_no_eigen.hpp"
 #include "PlockY/test_w_eigen.hpp"
 
-TEST_CASE("MyClass::add correctly adds two integers", "[MyClass]") {
-    MyClass myClass;
-    int result = myClass.add(2, 3);
-    REQUIRE(result == 5);
-
+TEST_CASE("MyEigenClass::add correctly adds two vector", "[MyEigenClass]") {
     MyEigenClass myEigenClass;
     Eigen::Vector2d a(1, 2);
     Eigen::Vector2d b(3, 4);

@@ -11,12 +11,3 @@ foreach(ex_source ${EG_SOURCES})
     # Link the test executable with the main library
     target_link_libraries(${ex_name} PlockY)
 endforeach()
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/mat_shop
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/blk_files
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/vec_shop
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/output
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

@@ -1,20 +1,29 @@
-# Collect all test source files
+Include(FetchContent)
+
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG v3.4.0 
+  )
+FetchContent_MakeAvailable(Catch2)
+
+# Get a list of all test source files
 file(GLOB TEST_SOURCES "*.cpp")
 
-foreach(test_source ${TEST_SOURCES})
-    # Get the name of the file without an extension
-    get_filename_component(test_name ${test_source} NAME_WE)
+# Loop over each test source file
+foreach(TEST_SOURCE ${TEST_SOURCES})
+    # Get the name of the test executable
+    get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
 
-    # Add executable for this test source
-    add_executable(${test_name} ${test_source})
+    # Create the test executable
+    add_executable(${TEST_NAME} ${TEST_SOURCE})
 
-    # Link the test executable with the main library
-    target_link_libraries(${test_name} PlockY)
+    # Link the libraries
+    target_link_libraries(${TEST_NAME}
+        PUBLIC PlockY
+        PRIVATE Catch2::Catch2WithMain
+    )
+
+    # Add the test
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
 endforeach()
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/mat_shop
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/blk_files
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/vec_shop
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
