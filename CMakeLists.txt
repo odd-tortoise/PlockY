@@ -13,14 +13,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 message(STATUS "Compiling with C++ standard: ${CMAKE_CXX_STANDARD}")
 
-
 option(BUILD_EXAMPLES "Build the examples" ON)
-option(BUILD_DOCS "Build the Doxygen documentation" ON)
 
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     option(BUILD_TESTS "Build tests" ON)
+    option(BUILD_DOCS "Build the Doxygen documentation" ON)
 else()
     set(BUILD_TESTS OFF)
+    set(BUILD_DOCS OFF)
 endif()
 
 
