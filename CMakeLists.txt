@@ -51,13 +51,11 @@ FetchContent_Declare(
     )
 FetchContent_MakeAvailable(Eigen)
 
-
-
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME} INTERFACE 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/extra/eigen
 )
+target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
 
 if ((BUILD_EXAMPLES OR BUILD_TESTS))
     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
