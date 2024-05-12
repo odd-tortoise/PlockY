@@ -1,21 +1,25 @@
-cmake_minimum_required(VERSION  3.14...3.28)
+cmake_minimum_required(VERSION  3.14)
 
 project(
     PlockY 
     VERSION 0.1.0
     LANGUAGES CXX)
 
+message(STATUS "Building ${PROJECT_NAME} version ${VERSION_STRING}")
+
 # Set correct version of c++
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+message(STATUS "Compiling with C++ standard: ${CMAKE_CXX_STANDARD}")
+
+
+option(BUILD_EXAMPLES "Build the examples" ON)
+option(BUILD_TESTS "Build the unit tests" ON)
+option(BUILD_DOCS "Build the Doxygen documentation" ON)
 
 # visual studio and Xcode organization
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-option(BUILD_EXAMPLES "Build the examples" ON)
-option(BUILD_TESTS "Build the tests" ON)
-option(BUILD_DOCS "Build the documentation" ON)
 
 # Submodules for dependencies (just eigen for now)
 find_package(Git QUIET)
@@ -33,11 +37,16 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     endif()
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extra/eigen)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+add_library(${PROJECT_NAME} INTERFACE)
+target_include_directories(${PROJECT_NAME} INTERFACE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/extra/eigen
+)
 
-add_subdirectory(src)
+if ((BUILD_EXAMPLES OR BUILD_TESTS))
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
 
 if (BUILD_EXAMPLES)
     message(STATUS "Building Examples.")
@@ -45,8 +54,8 @@ if (BUILD_EXAMPLES)
 endif()
 
 if (BUILD_TESTS)
-    message(STATUS "Building tests.")
     include(CTest)
+    message(STATUS "Building tests.")
     add_subdirectory(test)
 endif()
 

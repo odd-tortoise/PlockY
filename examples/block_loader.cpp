@@ -1,16 +1,14 @@
-#include "PlockY/CSVBlockLoaderFactory.hpp"
-#include "PlockY/BlockMatrix.hpp"
+#include "PlockY.hpp"
 #include <iostream>
 
 
 int main() {
     PlockY::CsvBlockLoader<double> factory;
-    auto denseBlock = factory.createDense("mat_shop/dense.csv", 2, 2);
-    auto denseBlock2 = factory.createDense("mat_shop/dense2.csv", 2, 2);
+    auto denseBlock = factory.createDense("../data/mat_shop/dense.csv", 2, 2);
+    auto denseBlock2 = factory.createDense("../data/mat_shop/dense2.csv", 2, 2);
 
-
-    auto sparseBlock = factory.createSparse("mat_shop/sparse.csv", 4, 4);
-    auto vecBlock = factory.createVector("vec_shop/vector.csv", 4);
+    auto sparseBlock = factory.createSparse("../data/mat_shop/sparse.csv", 4, 4);
+    auto vecBlock = factory.createVector("../data/vec_shop/vector.csv", 4);
 
     denseBlock->print();
     vecBlock->print();
