@@ -1,16 +1,13 @@
-#include "PlockY/BlockMatrixLoader.hpp"
-#include "PlockY/BlockVectorLoader.hpp"
-#include "PlockY/Strategy.hpp"
-#include "PlockY/Solver.hpp"
+#include "PlockY.hpp"
 
 int main() {
 
     std::cout << " LOADING DATA " << std::endl;
 
-    auto blockMatrix_dense = PlockY::BlockMatrixLoader::load<PlockY::DenseBlock<double>>("blk_files/5b5_withNonSquareBlocks.blk");
+    auto blockMatrix_dense = PlockY::BlockMatrixLoader::load<PlockY::DenseBlock<double>>("../data/blk_files/5b5_withNonSquareBlocks.blk");
     //auto blockMatrix_sparse = PlockY::BlockMatrixLoader::load<PlockY::SparseBlock<double>>("blk_files/saddle_point_sparse.blk");
-    auto blockvec = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("blk_files/5b5_withNonSquareBlocks_vector.vblk");
-    auto guess = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("blk_files/5b5_withNonSquareBlocks_vector.vblk");
+    auto blockvec = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../data/blk_files/5b5_withNonSquareBlocks_vector.vblk");
+    auto guess = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../data/blk_files/5b5_withNonSquareBlocks_vector.vblk");
 
     std::cout << " Creating 3 step strategy for DENSE" << std::endl;
     
