@@ -7,3 +7,6 @@
 #include "PlockY/BlockVectorLoader.hpp"
 #include "PlockY/Strategy.hpp"
 #include "PlockY/Solver.hpp"
+
+typedef PlockY::DenseBlock<double> denseBlockD;
+typedef PlockY::SparseBlock<double> sparseBlockD;

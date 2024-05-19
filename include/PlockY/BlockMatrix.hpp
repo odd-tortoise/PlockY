@@ -146,9 +146,13 @@ namespace PlockY {
 
         void print() const {
             for (const auto& block : blocks) {
-                std::cout << "Normal: Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ") count :" << std::get<2>(block).use_count() <<std::endl;
-                std::get<2>(block)->print();
-
+                if (std::get<3>(block) == BlockSpec::Transpose) {
+                    std::cout << "Transpose: Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ") count :" << std::get<2>(block).use_count() <<std::endl;
+                    std::get<2>(block)->print();
+                } else {
+                    std::cout << "Normal: Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ") count :" << std::get<2>(block).use_count() <<std::endl;
+                    std::get<2>(block)->print();
+                }
             }
         }
 

@@ -4,12 +4,12 @@
 0 2 4 2 ../data/mat_shop/55files/dense42.csv
 0 3 4 2 ../data/mat_shop/55files/dense42.csv
 1 0 2 4 ../data/mat_shop/55files/dense24.csv
-1 1 2 2 ../data/mat_shop/dense.csv
+1 1 2 2 ../data/mat_shop/dense/dense.csv
 2 0 2 4 ../data/mat_shop/55files/dense24.csv
-2 1 2 2 ../data/mat_shop/eye22.csv
+2 1 2 2 ../data/mat_shop/dense/eye22.csv
 3 0 2 4 ../data/mat_shop/55files/dense24.csv
-3 1 2 2 ../data/mat_shop/dense.csv
-3 3 2 2 ../data/mat_shop/dense.csv
+3 1 2 2 ../data/mat_shop/dense/dense.csv
+3 3 2 2 ../data/mat_shop/dense/dense.csv
 
 [Transpose]
 2 2 2 2 1 1 

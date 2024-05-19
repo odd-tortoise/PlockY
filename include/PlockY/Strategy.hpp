@@ -84,6 +84,7 @@ namespace PlockY {
              */
             
     void print() const {
+        /*
         for (const Step& step : steps) {
             std::cout << "Step with blocks: ";
             for (const auto& block : step.get_block_pos()) {
@@ -97,6 +98,8 @@ namespace PlockY {
             std::cout << block << " ";
         }
         std::cout << std::endl;
+        */
+
         std::cout<< "LHS indices: " << std::endl;
         for (const auto& indices : LHS_indices) {
             for (const auto& row : indices) {

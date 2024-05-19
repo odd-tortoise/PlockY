@@ -1,9 +1,0 @@
-[Blocks]
-0 0 4 4 mat_shop/sparse.csv
-0 1 4 4 mat_shop/sparse2.csv
-
-[Transpose]
-1 0 4 4 0 1
-
-[Zero]
-1 1 4 4

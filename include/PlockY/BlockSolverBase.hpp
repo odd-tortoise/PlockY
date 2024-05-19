@@ -2,7 +2,7 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-
+#include<Eigen/IterativeLinearSolvers>
 
 namespace PlockY {
 
@@ -31,6 +31,17 @@ public:
         return lu.solve(vector);
     }
 };
+
+template <typename Scalar>
+class EigenSparseBCGSTAB : public BlockSolverBase<Eigen::SparseMatrix<Scalar>, Eigen::Matrix<Scalar, Eigen::Dynamic, 1>> {
+public:
+    Eigen::Matrix<Scalar, Eigen::Dynamic, 1> solveBlock(const Eigen::SparseMatrix<Scalar>& matrix, const Eigen::Matrix<Scalar, Eigen::Dynamic, 1>& vector) override {
+        Eigen::BiCGSTAB<Eigen::SparseMatrix<double> > solver;
+        solver.compute(matrix);
+        return solver.solve(vector);
+    }
+};
+
 
 
 }  // namespace PlockY

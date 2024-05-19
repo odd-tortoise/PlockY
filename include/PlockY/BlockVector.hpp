@@ -36,6 +36,7 @@ namespace PlockY {
             }
 
             std::vector<int> mergedAndSorted(blockSet.begin(), blockSet.end());
+            std::sort(mergedAndSorted.begin(), mergedAndSorted.end());
 
             return strat.get_merged() == mergedAndSorted;
         }

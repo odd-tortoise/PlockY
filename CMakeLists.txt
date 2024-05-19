@@ -18,9 +18,11 @@ option(BUILD_EXAMPLES "Build the examples" ON)
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     option(BUILD_TESTS "Build tests" ON)
     option(BUILD_DOCS "Build the Doxygen documentation" ON)
+
 else()
     set(BUILD_TESTS OFF)
     set(BUILD_DOCS OFF)
+
 endif()
 
 
@@ -72,10 +74,13 @@ if (BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
+
 find_package(Doxygen)
-if(DOXYGEN_FOUND AND BUILD_DOCS)
-    message(STATUS "Building Docs.")
-    add_subdirectory(docs)
+if(DOXYGEN_FOUND)
+    if (BUILD_DOCS)
+        message(STATUS "Building Docs.")
+        add_subdirectory(docs)
+    endif()
 else()
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif()
