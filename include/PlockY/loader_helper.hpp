@@ -3,6 +3,7 @@
 #include <memory>
 #include "PlockY/AbstractBlockLoaderFactory.hpp"
 #include "PlockY/CSVBlockLoaderFactory.hpp"
+#include "PlockY/MTXBlockLoaderFactory.hpp"
 
 namespace PlockYHelper{
 
@@ -38,6 +39,8 @@ namespace PlockYHelper{
             void registerFactory(const std::string& extension) {
                 if (extension == "csv") {
                     factories_[extension] = std::make_shared<PlockY::CsvBlockLoader<Scalar>>();
+                }else if(extension == "mtx"){
+                    factories_[extension] = std::make_shared<PlockY::MTXBlockLoader<Scalar>>();
                 }else{
                     throw std::runtime_error("Unsupported file extension");
                 }
