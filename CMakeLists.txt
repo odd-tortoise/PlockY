@@ -45,6 +45,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #    endif()
 # endif()
 
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
 Include(FetchContent)
 FetchContent_Declare(
       Eigen
