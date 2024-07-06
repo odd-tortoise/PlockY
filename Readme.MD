@@ -2,13 +2,9 @@
 
 
 ## TODO 
-
-- branch parser: implementare i vari loader
-- branch CRTP: capire se ha senso o meno usare il CRTP per i BLocchi o i solver? 
-- branch solver: capire qual è il modo ottimale per implementare la risuluzione dei singoli blocchi. Come differenziare correttemente tra dense e sparse. Il solver genereale si occuperà di "spostare" i blocchi fare lo splitting, che design? Strategy?.
-
-
-- vario: doxygen, pybind, rifinire alcuni metodi , capire se vogliamo salvere le coordinate "vere" dei blocchi, aggiungere una classe VectorBlock similmente a Block?
+- vario: doxygen, pybind, rifinire alcuni metodi 
+- Benchmark
+- commenti
 
 ## Build
 
