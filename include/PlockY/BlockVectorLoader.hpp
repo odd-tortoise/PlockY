@@ -65,7 +65,6 @@ namespace PlockY {
                     }
                     std::unique_ptr<BlockType> block = std::make_unique<BlockType>(MatrixType::Zero(size));
                     blockVec.setBlock(pos, std::move(block));
-
                 }
             }
         }

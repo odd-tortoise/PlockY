@@ -3,9 +3,17 @@
 #include <memory>
 #include "PlockY/AbstractBlockLoaderFactory.hpp"
 #include "PlockY/CSVBlockLoaderFactory.hpp"
+#include "PlockY/MTXBlockLoaderFactory.hpp"
 
 namespace PlockYHelper{
-    std::string getFileExtension(const std::string& filePath);
+
+    std::string getFileExtension(const std::string& filePath) {
+            size_t dotPos = filePath.rfind('.');
+            if (dotPos == std::string::npos) {
+                throw std::runtime_error("File has no extension");
+            }
+            return filePath.substr(dotPos + 1);
+        }   
 
     template <typename Scalar>
     class FactoryRegistry {
@@ -31,6 +39,8 @@ namespace PlockYHelper{
             void registerFactory(const std::string& extension) {
                 if (extension == "csv") {
                     factories_[extension] = std::make_shared<PlockY::CsvBlockLoader<Scalar>>();
+                }else if(extension == "mtx"){
+                    factories_[extension] = std::make_shared<PlockY::MTXBlockLoader<Scalar>>();
                 }else{
                     throw std::runtime_error("Unsupported file extension");
                 }

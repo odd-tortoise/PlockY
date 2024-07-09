@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PlockY/Block.hpp"
+#include "Block.hpp"
 
 namespace PlockY
 {
