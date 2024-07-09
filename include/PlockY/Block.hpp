@@ -9,17 +9,20 @@
 namespace PlockY
 {
 
-    /**
-     * @brief The Block class is an abstract base class that represents a block of data.
-     *
-     * @tparam Scalar The type of data stored in the block.
-     */
+    /// @brief Enum class to represent the type of block.
     enum class BlockTypeEnum
     {
         Dense,
         Sparse,
         Vec
     };
+
+    /**
+     * @brief Abstract class for a block of data.
+     * 
+     * This class is a template class that represents a block of data. It is an abstract class, and is intended to be used as a base class for more specific block types.
+     * 
+     */
 
     template <typename MatrixType>
     class Block{

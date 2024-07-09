@@ -1,6 +1,6 @@
 [Blocks]
-0 20 data/rhs_block_0.csv
-2 20 data/rhs_block_2.csv
+0 20 ../benchmarks_data/test0/rhs_block_0.csv
+2 20 ../benchmarks_data/test0/rhs_block_2.csv
 
 [Zero]
 1 20

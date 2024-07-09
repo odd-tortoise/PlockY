@@ -90,7 +90,7 @@ namespace PlockY {
 
                 if (output_dir) {
                     std::ostringstream filename;
-                    filename << *output_dir << "_iter_" << max_iter << ".txt";
+                    filename << *output_dir << "iter_" << max_iter << ".txt";
                     std::ofstream outputFile(filename.str());
                     if (!outputFile.is_open()) {
                         throw std::runtime_error("Cannot open output file");
