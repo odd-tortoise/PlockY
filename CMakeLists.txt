@@ -13,16 +13,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 message(STATUS "Compiling with C++ standard: ${CMAKE_CXX_STANDARD}")
 
-option(BUILD_EXAMPLES "Build the examples" ON)
-
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     option(BUILD_TESTS "Build tests" ON)
     option(BUILD_DOCS "Build the Doxygen documentation" ON)
-
+    option(BUILD_BENCHMARKS "Build the benchmarks" ON)
+    option(BUILD_EXAMPLES "Build the examples" ON)
 else()
     set(BUILD_TESTS OFF)
     set(BUILD_DOCS OFF)
-
+    set(BUILD_BENCHMARKS OFF)
+    set(BUILD_EXAMPLES OFF)
 endif()
 
 
@@ -70,12 +70,17 @@ if (BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
+if (BUILD_BENCHMARKS)
+    message(STATUS "Building Benchmarks.")
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/benchmarks_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    add_subdirectory(benchmarks)
+endif()
+
 if (BUILD_TESTS)
     include(CTest)
     message(STATUS "Building tests.")
     add_subdirectory(test)
 endif()
-
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)

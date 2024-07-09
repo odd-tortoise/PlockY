@@ -1,0 +1,6 @@
+[Blocks]
+0 20 data/rhs_block_0.csv
+2 20 data/rhs_block_2.csv
+
+[Zero]
+1 20
