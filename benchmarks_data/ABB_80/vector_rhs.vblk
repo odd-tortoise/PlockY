@@ -1,0 +1,8 @@
+[Blocks]
+0 480 data/rhs_block_0.csv
+1 480 data/rhs_block_1.csv
+2 480 data/rhs_block_2.csv
+3 480 data/rhs_block_3.csv
+4 480 data/rhs_block_4.csv
+
+[Zero]
