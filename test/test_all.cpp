@@ -143,7 +143,7 @@ TEST_CASE("MTXBlockLoader creates VectorBlock correctly", "[MTXBlockLoader]") {
 
 TEST_CASE("BlockMatrixLoader correctly reads and parses .blk files and constructs matrices") {
     SECTION("Load dense block matrix from .blk file") {
-        std::string blkFilePath = "data/blk_files/5b5_withNonSquareBlocks_dense.blk";
+        std::string blkFilePath = "../data/blk_files/5b5_withNonSquareBlocks_dense.blk";
         auto blockMatrix = PlockY::BlockMatrixLoader::load<PlockY::DenseBlock<double>>(blkFilePath);
 
         REQUIRE(blockMatrix.isValid());
@@ -152,7 +152,7 @@ TEST_CASE("BlockMatrixLoader correctly reads and parses .blk files and construct
     }
 
     SECTION("Load sparse block matrix from .blk file") {
-        std::string blkFilePath = "data/blk_files/5b5_withNonSquareBlocks_sparse.blk";
+        std::string blkFilePath = "../data/blk_files/5b5_withNonSquareBlocks_sparse.blk";
         auto blockMatrix = PlockY::BlockMatrixLoader::load<PlockY::SparseBlock<double>>(blkFilePath);
 
         REQUIRE(blockMatrix.isValid());
@@ -163,7 +163,7 @@ TEST_CASE("BlockMatrixLoader correctly reads and parses .blk files and construct
 
 TEST_CASE("BlockMatrix integrity and placement verification") {
     SECTION("Dense block matrix placement and integrity") {
-        std::string blkFilePath = "data/blk_files/5b5_withNonSquareBlocks_dense.blk";
+        std::string blkFilePath = "../data/blk_files/5b5_withNonSquareBlocks_dense.blk";
         auto blockMatrix = PlockY::BlockMatrixLoader::load<PlockY::DenseBlock<double>>(blkFilePath);
 
         REQUIRE(blockMatrix.isValid());
@@ -181,7 +181,7 @@ TEST_CASE("BlockMatrix integrity and placement verification") {
     }
 
     SECTION("Sparse block matrix placement and integrity") {
-        std::string blkFilePath = "data/blk_files/5b5_withNonSquareBlocks_sparse.blk";
+        std::string blkFilePath = "../data/blk_files/5b5_withNonSquareBlocks_sparse.blk";
         auto blockMatrix = PlockY::BlockMatrixLoader::load<PlockY::SparseBlock<double>>(blkFilePath);
 
         REQUIRE(blockMatrix.isValid());
@@ -199,7 +199,7 @@ TEST_CASE("BlockMatrix integrity and placement verification") {
     }
 
     SECTION("Vector block matrix placement and integrity") {
-        std::string blkFilePath = "data/blk_files/5b5guess.vblk";
+        std::string blkFilePath = "../data/blk_files/5b5guess.vblk";
         auto blockVector = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>(blkFilePath);
 
         // Verify the placement and integrity
