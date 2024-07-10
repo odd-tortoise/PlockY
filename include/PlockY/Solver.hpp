@@ -88,19 +88,14 @@ namespace PlockY {
                 res = calculate_residual(u_old, guess);
                 std::cout << "Residual: " << res << std::endl;
 
+                u_old = guess;
+                toll_criteria_not_met = res > toll;
+
                 if (output_dir) {
                     std::ostringstream filename;
                     filename << *output_dir << "iter_" << max_iter << ".txt";
-                    std::ofstream outputFile(filename.str());
-                    if (!outputFile.is_open()) {
-                        throw std::runtime_error("Cannot open output file");
-                    }
-                    outputFile << u_old.to_string();          
-                    outputFile.close();
+                    u_old.save(filename.str());
                 }
-
-                u_old = guess;
-                toll_criteria_not_met = res > toll;
             }
             return guess;
         }

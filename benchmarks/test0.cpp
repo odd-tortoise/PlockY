@@ -37,15 +37,13 @@ int main() {
     
 
     // strategy
-    PlockY::Step step_1({0,1,2});
-    PlockY::Step step_2({1});
-    PlockY::Step step_3({2});
-    PlockY::Strategy strategy({step_1});
+    PlockY::Step step_1({0,1});
+    PlockY::Step step_2({2});
+    PlockY::Strategy strategy({step_1,step_2});
 
     auto sparseLU_solver = std::make_shared<PlockY::EigenSparseLU<double>>();
     PlockY::Solver<PlockY::SparseBlock<double>,PlockY::VectorBlock<double>> solver_sparse(1e-8, 1000, 0.5, strategy, sparseLU_solver);
     solver_sparse.solve(blockMatrix_sparse, blockvec, guess, "test0/");
 
-    
     return 0;
 }

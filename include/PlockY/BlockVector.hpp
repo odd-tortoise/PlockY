@@ -107,18 +107,16 @@ namespace PlockY {
         }
 
 
-        //utility function to convert the block vector to string for debugging
-        std::string to_string() {
-            std::string res = "";
-            for (const auto& block : vec_blocks) {
-                res += vectoString(std::get<1>(block)->getMatrix()) + "\n";
+        void save(const std::string& filename) const {
+            std::ofstream outputFile(filename);
+            if (outputFile.is_open()) {
+                for (const auto& block : vec_blocks) {
+                    outputFile << std::get<1>(block)->getMatrix() << std::endl;
+                }
+                outputFile.close();
+            } else {
+                std::cerr << "Unable to open file for writing." << std::endl;
             }
-            return res;
-        }
-        static std::string vectoString(const MatrixType& mat){
-            std::stringstream ss;
-            ss << mat;
-            return ss.str();
         }
     
     };
