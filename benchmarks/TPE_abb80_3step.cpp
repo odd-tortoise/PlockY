@@ -37,14 +37,14 @@ int main() {
     auto guess = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_80/guess.vblk");
     
 
-    // strategy - 3 steps H-F -M
-    PlockY::Step step_1({0,1,4});
-    PlockY::Step step_2({2});
-    PlockY::Step step_3({3});
+    // strategy - 3 steps F . H . M
+    PlockY::Step step_3({0,1,4});
+    PlockY::Step step_1({2});
+    PlockY::Step step_2({3});
     PlockY::Strategy strategy({step_1,step_2,step_3});
 
     auto sparseLU_solver = std::make_shared<PlockY::EigenSparseLU<double>>();
-    PlockY::Solver<PlockY::SparseBlock<double>,PlockY::VectorBlock<double>> solver_sparse(1e-8, 1000, 0.5, strategy, sparseLU_solver);
+    PlockY::Solver<PlockY::SparseBlock<double>,PlockY::VectorBlock<double>> solver_sparse(1e-6, 2000, 0.5, strategy, sparseLU_solver);
     solver_sparse.solve(blockMatrix_sparse, blockvec, guess, "TPE_abb80_3step/");
 
     return 0;

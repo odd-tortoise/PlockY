@@ -73,9 +73,10 @@ namespace PlockY {
             
             while (toll_criteria_not_met and max_iter-- > 0) {
                 for(int i=0; i < steps.size(); i++) {
-                    const auto& LHS = matrix.get_lhs(i);
                     
-                    const auto& u_star_old = guess.get_rhs_compl(strategy,i);
+                    auto LHS = matrix.get_lhs(i);
+                    
+                    auto u_star_old = guess.get_rhs_compl(strategy,i);
                    
                     auto RHS = rhs.get_rhs(i) - matrix.get_corr(i) * u_star_old;  
                     
