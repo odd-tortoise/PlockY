@@ -77,8 +77,10 @@ namespace PlockY {
                     auto LHS = matrix.get_lhs(i);
                     
                     auto u_star_old = guess.get_rhs_compl(strategy,i);
+
+                    auto corr =  matrix.get_corr(i) * u_star_old;
                    
-                    auto RHS = rhs.get_rhs(i) - matrix.get_corr(i) * u_star_old;  
+                    auto RHS = rhs.get_rhs(i) - corr;  
                     
                     auto u_star = block_solvers[i]->solveBlock(LHS, RHS);
                   

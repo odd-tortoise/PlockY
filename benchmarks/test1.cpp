@@ -27,7 +27,6 @@ int main() {
     PLOCKY:
     solve with plocky the system fullmat.csv * x = vector.csv
     */
-
     // load block matrix
     auto blockMatrix_sparse = PlockY::BlockMatrixLoader::load<PlockY::SparseBlock<double>>("../benchmarks_data/test1/blocks.blk");
     // load block vector

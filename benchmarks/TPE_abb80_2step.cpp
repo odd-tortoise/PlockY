@@ -34,7 +34,7 @@ int main() {
     // load block vector
     auto blockvec = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_80/vector_rhs.vblk");
     // guess
-    auto guess = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_80/guess.vblk");
+    auto guess = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_80/vector_rhs.vblk");
     
 
     // strategy - 2 steps FM-H
