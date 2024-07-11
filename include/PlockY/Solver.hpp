@@ -72,7 +72,7 @@ namespace PlockY {
 
             const auto& steps = strategy.get_steps();
             
-            while (toll_criteria_not_met and max_iter-- > 0) {
+            while (toll_criteria_not_met && max_iter-- > 0) {
                 for(int i=0; i < steps.size(); i++) {
                     
                     auto LHS = matrix.get_lhs(i);
@@ -113,7 +113,6 @@ namespace PlockY {
             }
             return guess;
         }
-
     };
 }
 
