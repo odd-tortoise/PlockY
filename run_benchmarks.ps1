@@ -1,5 +1,5 @@
 $benchmarksDir = ".\build\benchmarks"
-$executables = @("test0.exe","test_micro.exe","test_micro2.exe", "TPE_abb20_2step.exe","TPE_abb80_2step.exe")  # Custom list of executables
+$executables = @("test0.exe","test_micro.exe","test_micro2.exe", "TPE_abb20_2step.exe","TPE_abb80_2step.exe", "TPE_abb20_3step.exe","TPE_abb80_3step.exe")  # Custom list of executables
 
 # Check if the benchmarks directory exists
 if (-Not (Test-Path $benchmarksDir)) {
