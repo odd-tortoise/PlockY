@@ -8,15 +8,15 @@ int main() {
     */
 
     // load full matrix
-    auto fullmat = PlockY::CsvBlockLoader<double>().createSparse("../benchmarks_data/ABB_80/LHS_1_full_sparse.csv",2400,2400)->getMatrix();
+    auto fullmat = PlockY::CsvBlockLoader<double>().createSparse("../benchmarks_data/ABB_20/LHS_1_full_sparse.csv",600,600)->getMatrix();
     // load vector
-    auto vector = PlockY::CsvBlockLoader<double>().createVector("../benchmarks_data/ABB_80/RHS0_1_full.csv",2400)->getMatrix();
+    auto vector = PlockY::CsvBlockLoader<double>().createVector("../benchmarks_data/ABB_20/RHS0_1_full.csv",600)->getMatrix();
 
     Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
     solver.compute(fullmat);
     Eigen::VectorXd x = solver.solve(vector);
 
-    std::ofstream outFile("TPE_abb80_2step/gold.txt");
+    std::ofstream outFile("TPE_abb20_2step/gold.txt");
     if (outFile.is_open()) {
         outFile << x << std::endl;
         outFile.close();
@@ -30,11 +30,11 @@ int main() {
     */
 
     // load block matrix
-    auto blockMatrix_sparse = PlockY::BlockMatrixLoader::load<PlockY::SparseBlock<double>>("../benchmarks_data/ABB_80/blocks.blk");
+    auto blockMatrix_sparse = PlockY::BlockMatrixLoader::load<PlockY::SparseBlock<double>>("../benchmarks_data/ABB_20/blocks.blk");
     // load block vector
-    auto blockvec = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_80/vector_rhs.vblk");
+    auto blockvec = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_20/vector_rhs.vblk");
     // guess
-    auto guess = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_80/guess.vblk");
+    auto guess = PlockY::BlockVectorLoader::load<PlockY::VectorBlock<double>>("../benchmarks_data/ABB_20/guess.vblk");
     
 
     // strategy - 2 steps FM-H
@@ -44,7 +44,7 @@ int main() {
 
     auto sparse_solver = std::make_shared<PlockY::EigenSparseBCGSTAB<double>>();
     PlockY::Solver<PlockY::SparseBlock<double>,PlockY::VectorBlock<double>> solver_sparse(1e-6, 2000, 0.5, strategy, sparse_solver);
-    solver_sparse.solve(blockMatrix_sparse, blockvec, guess, "TPE_abb80_2step/");
+    solver_sparse.solve(blockMatrix_sparse, blockvec, guess, "TPE_abb20_2step/");
 
     return 0;
 }

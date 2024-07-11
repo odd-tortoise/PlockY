@@ -60,7 +60,8 @@ namespace PlockY {
         BlockVector<VectorBlockType> solve(BlockMatrix<BlockType>& matrix,
                                            BlockVector<VectorBlockType>& rhs,
                                            BlockVector<VectorBlockType>& guess,
-                                           const std::optional<std::string>& output_dir = std::nullopt
+                                           const std::optional<std::string>& output_dir = std::nullopt,
+                                           bool verbose = false
                                            ) {  
             
             matrix.regroup(strategy);
@@ -87,9 +88,19 @@ namespace PlockY {
                     u_star = relax(u_star, u_old.get_rhs(i), relax_factor);    
   
                     guess.update(steps[i], i, u_star);    
+
+
+                    if (verbose) {
+                        std::cout << "ITER: " << max_iter << std::endl;
+                        std::cout << "Step: " << i << std::endl;
+                        std::cout << "LHS: " << LHS << std::endl;
+                        std::cout << "corr: " << corr << std::endl;
+                        std::cout << "RHS: " << RHS << std::endl;      
+                    }
                 }
                 res = calculate_residual(u_old, guess);
                 std::cout << "Residual: " << res << std::endl;
+                std::cout << std::endl;
 
                 u_old = guess;
                 toll_criteria_not_met = res > toll;

@@ -1,0 +1,12 @@
+[Blocks]
+0 0 2 2 ../benchmarks_data/micro/block_0_0.csv
+0 2 2 6 ../benchmarks_data/micro/block_0_2.csv
+1 0 2 2 ../benchmarks_data/micro/block_1_0.csv
+1 1 2 2 ../benchmarks_data/micro/block_1_1.csv
+2 2 6 6 ../benchmarks_data/micro/block_2_2.csv
+2 1 6 2 ../benchmarks_data/micro/block_2_1.csv
+
+[Zero]
+0 1 2 2
+1 2 2 6
+2 0 6 2
