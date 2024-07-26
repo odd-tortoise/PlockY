@@ -13,7 +13,7 @@ namespace PlockY{
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
-                throw std::runtime_error("Could not open file");
+                throw std::runtime_error("Could not open file: " + filePath);
             }
 
             // Read the first line to determine the number of columns
@@ -45,7 +45,7 @@ namespace PlockY{
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
-                throw std::runtime_error("Could not open file");
+                throw std::runtime_error("Could not open file: " + filePath);
             }
             // Read the data from the file
             std::string line;
@@ -62,7 +62,7 @@ namespace PlockY{
                 if (cells.size() == 3) {
                     int i = std::stoi(cells[0]);
                     int j = std::stoi(cells[1]);
-                    Scalar value = std::stod(cells[2]);
+                    Scalar value = std::stod(cells[2]); //TODO: fix this as they do here specializing a template CSV line, https://gitlab.com/libeigen/eigen/-/blob/master/unsupported/Eigen/src/SparseExtra/MarketIO.h?ref_type=heads
                     tripletList.push_back(Eigen::Triplet<Scalar>(i, j, value));
                 }
             }
@@ -76,7 +76,7 @@ namespace PlockY{
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
-                throw std::runtime_error("Could not open file");
+                throw std::runtime_error("Could not open file: " + filePath);
             }
 
             // Read the first line to determine the number of columns

@@ -6,6 +6,7 @@
 #include <memory>
 #include <numeric>
 #include "PlockY/VecBlock.hpp"
+#include <fstream> 
 
 namespace PlockY {
     template <typename BlockType>

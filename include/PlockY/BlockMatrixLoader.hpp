@@ -57,7 +57,10 @@ namespace PlockY {
                     }
                     // Determine the file extension
                     std::string extension = PlockYHelper::getFileExtension(blockFilePath);
+                    
+                    //get the facory for the file extension
                     auto factory = PlockYHelper::FactoryRegistry<Scalar>::getInstance().getFactory(extension);
+
                     if constexpr (std::is_same<BlockType, DenseBlock<Scalar>>::value) {
                         block = factory->createDense(blockFilePath, sizeRow, sizeCol);
                     } else if constexpr (std::is_same<BlockType, SparseBlock<Scalar>>::value) {
@@ -80,6 +83,7 @@ namespace PlockY {
                         break;  // Error
                     }
                     std::unique_ptr<BlockType> block = nullptr;
+                    
                     if constexpr (std::is_same<BlockType, DenseBlock<Scalar>>::value) {
                         block = std::make_unique<BlockType>(MatrixType::Zero(sizeRow, sizeCol));
                         blockMatrix.setBlock(posX, posY, std::move(block), BlockSpec::Normal);

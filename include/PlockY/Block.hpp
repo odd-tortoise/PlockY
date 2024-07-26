@@ -31,10 +31,21 @@ namespace PlockY
          * @brief Default constructor for the Block class.
          */
         Block() : matrix(MatrixType()){};
+
+
+        /**
+         * @brief Constructs a Block object with the given matrix.
+         *
+         * This constructor initializes the Block object by copying the provided matrix.
+         * It also sets the number of rows and columns of the Block based on the provided matrix.
+         *
+         * @param matrix The matrix to initialize the Block with. The matrix type must have
+         *               `rows()` and `cols()` methods to get the number of rows and columns.
+         */
         Block(const MatrixType &matrix) : matrix(matrix){
             rows = matrix.rows();
             cols = matrix.cols();
-        }; // assume that matrix type has rows() and cols()
+        }; 
 
         /**
          * @brief Virtual destructor for the Block class.
@@ -58,7 +69,7 @@ namespace PlockY
 
         void setMatrix(const MatrixType &newData){
             if (newData.rows() != rows || newData.cols() != cols){
-                throw std::invalid_argument("Size of new data does not match size of block");
+                throw std::invalid_argument("Size of new data does not match the current size of this block");
             }
             this->matrix = newData;
         };

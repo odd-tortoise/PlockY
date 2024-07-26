@@ -12,7 +12,7 @@ public:
     virtual VectorType solveBlock(const MatrixType& matrix, const VectorType& vector) = 0;
 };
 
-// Specialization for dense matrices
+// Specialization for dense matrices with LU from Eigen
 template <typename Scalar>
 class EigenDenseLU : public BlockSolverBase<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>, Eigen::Matrix<Scalar, Eigen::Dynamic, 1>> {
 public:
@@ -22,7 +22,7 @@ public:
     }
 };
 
-// Specialization for sparse matrices
+// Specialization for sparse matrices with LU frome Eigen
 template <typename Scalar>
 class EigenSparseLU : public BlockSolverBase<Eigen::SparseMatrix<Scalar>, Eigen::Matrix<Scalar, Eigen::Dynamic, 1>> {
 public:
@@ -32,6 +32,7 @@ public:
     }
 };
 
+// Specialization for sparse matrices with BiCGSTAB from Eigen
 template <typename Scalar>
 class EigenSparseBCGSTAB : public BlockSolverBase<Eigen::SparseMatrix<Scalar>, Eigen::Matrix<Scalar, Eigen::Dynamic, 1>> {
 public:

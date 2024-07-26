@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PlockY/BlockMatrix.hpp"
+#include "PlockY/BlockVector.hpp"
 #include "PlockY/Step.hpp"
 #include "PlockY/CSVBlockLoaderFactory.hpp"
 #include "PlockY/MTXBlockLoaderFactory.hpp"

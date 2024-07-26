@@ -27,7 +27,6 @@ namespace PlockY {
         std::vector<MatrixType> CORR;
         std::vector<std::tuple<int, int, std::shared_ptr<BlockType>, BlockSpec>> blocks;
 
-
         MatrixType regroup_indices(std::vector<std::vector<std::tuple<int,int>>> step){
             std::vector<MatrixType> res;
             for (const auto& row : step) {
@@ -70,14 +69,17 @@ namespace PlockY {
         void setBlock(int row, int col, std::unique_ptr<BlockType> block, BlockSpec type) {
             blocks.push_back(std::make_tuple(row, col, std::move(block),type));
         }
+
+        /*
         void setBlock(int row, int col, std::shared_ptr<BlockType> block, BlockSpec type) {
             blocks.push_back(std::make_tuple(row, col, std::move(block),type));
         }
+        */
         
         std::shared_ptr<BlockType> getBlock(int row, int col) const { 
             for (const auto& block : blocks) {
                 if (std::get<0>(block) == row && std::get<1>(block) == col) {
-                    return std::get<2>(block) ;
+                    return std::get<2>(block);
                 }
             }
             return nullptr;
@@ -147,10 +149,10 @@ namespace PlockY {
         void print() const {
             for (const auto& block : blocks) {
                 if (std::get<3>(block) == BlockSpec::Transpose) {
-                    std::cout << "Transpose: Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ") count :" << std::get<2>(block).use_count() <<std::endl;
+                    std::cout << "Transpose: Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ")" <<std::endl;
                     std::get<2>(block)->print();
                 } else {
-                    std::cout << "Normal: Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ") count :" << std::get<2>(block).use_count() <<std::endl;
+                    std::cout << "Normal: Block at position (" << std::get<0>(block) << ", " << std::get<1>(block) << ")" <<std::endl;
                     std::get<2>(block)->print();
                 }
             }

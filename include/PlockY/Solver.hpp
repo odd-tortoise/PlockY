@@ -47,6 +47,19 @@ namespace PlockY {
 
     public:
 
+
+
+        /**
+         * @brief Constructor that initializes the Solver with a vector of block solvers.
+         * 
+         * @param toll The tolerance level for the solver.
+         * @param max_iter The maximum number of iterations allowed.
+         * @param relax The relaxation factor.
+         * @param strat The strategy to be used by the solver.
+         * @param block_solvers A vector of shared pointers to BlockSolverBase objects.
+         * 
+         * @throws std::invalid_argument if the size of block_solvers does not match the number of steps in the strategy.
+         */
         Solver(double toll, size_t max_iter, double relax, const Strategy& strat, const std::vector<std::shared_ptr<BlockSolverBase<MatrixType, VectorType>>>& block_solvers)
         : toll(toll), max_iter(max_iter), relax_factor(relax), strategy(strat), block_solvers(block_solvers) {
             if (block_solvers.size() != strat.get_steps().size()) {
@@ -54,9 +67,29 @@ namespace PlockY {
             }
         }
 
+        /**
+         * @brief Constructor that initializes the Solver with a single block solver, which is replicated for each step in the strategy.
+         * 
+         * @param toll The tolerance level for the solver.
+         * @param max_iter The maximum number of iterations allowed.
+         * @param relax The relaxation factor.
+         * @param strat The strategy to be used by the solver.
+         * @param block_solver A shared pointer to a single BlockSolverBase object.
+         */
         Solver(double toll, size_t max_iter, double relax, const Strategy& strat, const std::shared_ptr<BlockSolverBase<MatrixType, VectorType>>& block_solver)
         : toll(toll), max_iter(max_iter), relax_factor(relax), strategy(strat), block_solvers(std::vector<std::shared_ptr<BlockSolverBase<MatrixType, VectorType>>>(strat.get_steps().size(), block_solver)) {}
 
+        /**
+         * @brief Solves the system of equations Ax = b.
+         * 
+         * @param matrix The BlockMatrix object representing the matrix A.
+         * @param rhs The BlockVector object representing the vector b.
+         * @param guess The BlockVector object representing the initial guess x.
+         * @param output_dir The directory to save the output files to.
+         * @param verbose Whether to print verbose output.
+         * 
+         * @return The BlockVector object representing the solution x.
+         */
         BlockVector<VectorBlockType> solve(BlockMatrix<BlockType>& matrix,
                                            BlockVector<VectorBlockType>& rhs,
                                            BlockVector<VectorBlockType>& guess,
@@ -98,12 +131,15 @@ namespace PlockY {
                         std::cout << "RHS: " << RHS << std::endl;      
                     }
                 }
+
                 res = calculate_residual(u_old, guess);
                 std::cout << "Residual: " << res << std::endl;
                 std::cout << std::endl;
 
                 u_old = guess;
                 toll_criteria_not_met = res > toll;
+
+                
 
                 if (output_dir) {
                     std::ostringstream filename;
@@ -115,17 +151,3 @@ namespace PlockY {
         }
     };
 }
-
-
-/*
-  if (output_dir) {
-    std::ostringstream filename;
-    filename << *output_dir << "/iter_" << max_iter << "_step_" << i << ".txt";
-    std::ofstream outputFile(filename.str());
-    if (!outputFile.is_open()) {
-        throw std::runtime_error("Cannot open output file");
-    }
-    outputFile << guess.to_string();          
-    outputFile.close();
-}
-*/

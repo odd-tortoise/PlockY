@@ -14,7 +14,7 @@ namespace PlockY{
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
-                throw std::runtime_error("Could not open file");
+                throw std::runtime_error("Could not open file: " + filePath);
             }
 
             Eigen::MatrixXd matrix;
@@ -27,12 +27,14 @@ namespace PlockY{
         std::unique_ptr<SparseBlock<Scalar>> createSparse(const std::string& filePath, size_t row, size_t col) override {
             std::ifstream file(filePath);
             if (!file) {
-                throw std::runtime_error("Could not open file");
+                throw std::runtime_error("Could not open file: " + filePath);
             }
 
             // Read the Matrix Market banner
             std::string banner;
             std::getline(file, banner);
+
+            // TODO: use the eigen utility for the header, similar to this anyway
 
             // Check the matrix type
             if (banner.find("skew-symmetric") != std::string::npos) {
@@ -61,7 +63,7 @@ namespace PlockY{
             // Open the file
             std::ifstream file(filePath);
             if (!file) {
-                throw std::runtime_error("Could not open file");
+                throw std::runtime_error("Could not open file: " + filePath);
             }
             Eigen::MatrixXd matrix;
             Eigen::loadMarketDense(matrix, filePath);
