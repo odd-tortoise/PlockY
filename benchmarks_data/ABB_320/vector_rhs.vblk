@@ -1,0 +1,8 @@
+[Blocks]
+0 1920 ../benchmarks_data/ABB_320/rhs_block_0.csv
+1 1920 ../benchmarks_data/ABB_320/rhs_block_1.csv
+2 1920 ../benchmarks_data/ABB_320/rhs_block_2.csv
+3 1920 ../benchmarks_data/ABB_320/rhs_block_3.csv
+4 1920 ../benchmarks_data/ABB_320/rhs_block_4.csv
+
+[Zero]

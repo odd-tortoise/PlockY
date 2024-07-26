@@ -12,7 +12,7 @@
 3 3 2 2 ../data/mat_shop/dense/dense.csv
 
 [Transpose]
-2 2 2 2 1 1 
+2 2 1 1 
 
 [Zero]
 1 2 2 2

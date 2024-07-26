@@ -68,7 +68,7 @@ namespace PlockY {
             } else if (key == "Transpose") {
                 while (std::getline(file, line)) {
                     std::istringstream iss(line);
-                    if (!(iss >> posX >> posY >> sizeRow >> sizeCol >> posTX >> posTY)) {
+                    if (!(iss >> posX >> posY >> posTX >> posTY)) {
                         break;  // Error
                     }
                     blockMatrix.setBlock(posX, posY, blockMatrix.getBlock(posTX, posTY), BlockSpec::Transpose);

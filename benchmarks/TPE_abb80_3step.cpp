@@ -43,8 +43,8 @@ int main() {
     PlockY::Step step_2({3});
     PlockY::Strategy strategy({step_1,step_2,step_3});
 
-    auto sparseLU_solver = std::make_shared<PlockY::EigenSparseBCGSTAB<double>>();
-    PlockY::Solver<PlockY::SparseBlock<double>,PlockY::VectorBlock<double>> solver_sparse(1e-6, 2000, 0.5, strategy, sparseLU_solver);
+    auto sparse_solver = std::make_shared<PlockY::EigenSparseBCGSTAB<double>>();
+    PlockY::Solver<PlockY::SparseBlock<double>,PlockY::VectorBlock<double>> solver_sparse(1e-6, 2000, 0.5, strategy, sparse_solver);
     solver_sparse.solve(blockMatrix_sparse, blockvec, guess, "TPE_abb80_3step/");
 
     return 0;
