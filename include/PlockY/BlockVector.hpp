@@ -45,7 +45,7 @@ namespace PlockY {
     public:
         BlockVector() = default;
 
-        void setBlock(int pos, std::unique_ptr<BlockType> block) {
+        void setBlock(int pos, std::shared_ptr<BlockType> block) {
             vec_blocks.push_back(std::make_tuple(pos, std::move(block)));
         }
 

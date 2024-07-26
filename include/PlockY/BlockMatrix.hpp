@@ -66,15 +66,18 @@ namespace PlockY {
     public:
         BlockMatrix() = default;
 
+
+        /*
         void setBlock(int row, int col, std::unique_ptr<BlockType> block, BlockSpec type) {
             blocks.push_back(std::make_tuple(row, col, std::move(block),type));
         }
+        */
 
-        /*
+        
         void setBlock(int row, int col, std::shared_ptr<BlockType> block, BlockSpec type) {
             blocks.push_back(std::make_tuple(row, col, std::move(block),type));
         }
-        */
+        
         
         std::shared_ptr<BlockType> getBlock(int row, int col) const { 
             for (const auto& block : blocks) {
