@@ -61,8 +61,8 @@ TEST_CASE("SparseBlock Setting and Getting a Value", "[SparseBlock]") {
     sparseMatrix.insert(1, 1) = 4;
 
     PlockY::SparseBlock<double> sparseBlock(sparseMatrix);
-    sparseBlock.set(0, 0, 10.0);
-    REQUIRE(sparseBlock.get(0, 0) == 10.0);
+    sparseBlock.set(1, 0, 10.0);
+    REQUIRE(sparseBlock.get(1, 0) == 10.0);
 }
 
 // Test for SparseBlock Retrieving the Matrix
