@@ -4,13 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       benchmark1:
-        description: 'First benchmark to run'
+        description: 'Benchmark to run'
         required: true
-        default: 'benchmark1'
-      benchmark2:
-        description: 'Second benchmark to run'
-        required: true
-        default: 'benchmark2'
+        default: 'benchmarks/TPE_abb20_2step'
 
 jobs:
   build-and-profile:
@@ -38,23 +34,14 @@ jobs:
         cmake ..
         cmake --build .
 
-    - name: Run first benchmark with profiling
+    - name: Run  benchmark with profiling
       run: |
         LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./build/${{ github.event.inputs.benchmark1 }}
-
-    - name: Run second benchmark with profiling
-      run: |
-        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark2.prof ./build/${{ github.event.inputs.benchmark2 }}
-
-    - name: Generate profiling report for first benchmark
+        
+    - name: Generate profiling report for benchmark
       run: |
         pprof --text ./build/${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.txt
         pprof --pdf ./build/${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.pdf
-
-    - name: Generate profiling report for second benchmark
-      run: |
-        pprof --text ./build/${{ github.event.inputs.benchmark2 }} benchmark2.prof > benchmark2_profile.txt
-        pprof --pdf ./build/${{ github.event.inputs.benchmark2 }} benchmark2.prof > benchmark2_profile.pdf
 
     - name: Upload profiling reports
       uses: actions/upload-artifact@v3
@@ -63,5 +50,5 @@ jobs:
         path: |
           benchmark1_profile.txt
           benchmark1_profile.pdf
-          benchmark2_profile.txt
-          benchmark2_profile.pdf
+
+
