@@ -36,7 +36,9 @@ jobs:
     - name: Run benchmark with profiling
       run: |
         cd build/benchmarks
-        HEAPCHECK=normal LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof HEAPPROFILE=benchmark1_heap ./${{ github.event.inputs.benchmark1 }}
+        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./${{ github.event.inputs.benchmark1 }}
+       
+        LD_PRELOAD=/usr/local/lib/libprofiler.so HEAPPROFILE=benchmark1_heap ./${{ github.event.inputs.benchmark1 }}
         cd ../..
 
     - name: Generate profiling report for benchmark
