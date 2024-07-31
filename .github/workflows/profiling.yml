@@ -36,7 +36,9 @@ jobs:
 
     - name: Run  benchmark with profiling
       run: |
+        cd build
         LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./build/${{ github.event.inputs.benchmark1 }}
+        cd ..
         
     - name: Generate profiling report for benchmark
       run: |
