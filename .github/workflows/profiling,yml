@@ -1,0 +1,67 @@
+name: Run gperftools Profiling
+
+on:
+  workflow_dispatch:
+    inputs:
+      benchmark1:
+        description: 'First benchmark to run'
+        required: true
+        default: 'benchmark1'
+      benchmark2:
+        description: 'Second benchmark to run'
+        required: true
+        default: 'benchmark2'
+
+jobs:
+  build-and-profile:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y autoconf automake libtool gperf cmake g++ # Install CMake and build tools
+        git clone https://github.com/gperftools/gperftools.git
+        cd gperftools
+        ./autogen.sh
+        ./configure
+        make
+        sudo make install
+        
+    - name: Build
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
+        cmake --build .
+
+    - name: Run first benchmark with profiling
+      run: |
+        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./build/${{ github.event.inputs.benchmark1 }}
+
+    - name: Run second benchmark with profiling
+      run: |
+        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark2.prof ./build/${{ github.event.inputs.benchmark2 }}
+
+    - name: Generate profiling report for first benchmark
+      run: |
+        pprof --text ./build/${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.txt
+        pprof --pdf ./build/${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.pdf
+
+    - name: Generate profiling report for second benchmark
+      run: |
+        pprof --text ./build/${{ github.event.inputs.benchmark2 }} benchmark2.prof > benchmark2_profile.txt
+        pprof --pdf ./build/${{ github.event.inputs.benchmark2 }} benchmark2.prof > benchmark2_profile.pdf
+
+    - name: Upload profiling reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: profiling-reports
+        path: |
+          benchmark1_profile.txt
+          benchmark1_profile.pdf
+          benchmark2_profile.txt
+          benchmark2_profile.pdf
