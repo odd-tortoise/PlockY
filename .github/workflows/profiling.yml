@@ -33,32 +33,42 @@ jobs:
         cmake -B ${{github.workspace}}/build
         cmake --build ${{github.workspace}}/build
 
-    - name: Run benchmark with profiling
+    - name: Run CPU profiling
       run: |
         cd build/benchmarks
         LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./${{ github.event.inputs.benchmark1 }}
-       
-        LD_PRELOAD=/usr/local/lib/libprofiler.so HEAPPROFILE=benchmark1_heap ./${{ github.event.inputs.benchmark1 }}
-        cd ../..
-
-    - name: Generate profiling report for benchmark
-      run: |
-        cd build/benchmarks
         pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.txt
         pprof --pdf ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.pdf
-        
-        pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1_heap.0001.heap > benchmark1_memory_profile.txt
-        pprof --pdf ./${{ github.event.inputs.benchmark1 }} benchmark1_heap.0001.heap > benchmark1_memory_profile.pdf
         cd ../..
 
-    - name: Upload profiling reports
+    - name: Upload CPU profiling reports
       uses: actions/upload-artifact@v3
       with:
-        name: profiling-reports
+        name: profiling-reports-cpu
         path: |
           build/benchmarks/benchmark1_cpu_profile.txt
           build/benchmarks/benchmark1_cpu_profile.pdf
+
+  
+    - name: Run Memory profiling
+      run: |
+        cd build/benchmarks
+         
+        LD_PRELOAD=/usr/local/lib/libprofiler.so HEAPPROFILE=benchmark1_heap ./${{ github.event.inputs.benchmark1 }}
+        ls
+        pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1_heap.0001.heap > benchmark1_memory_profile.txt
+        pprof --pdf ./${{ github.event.inputs.benchmark1 }} benchmark1_heap.0001.heap > benchmark1_memory_profile.pdf
+      
+        cd ../..
+
+    - name: Upload Memory profiling reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: profiling-reports-memory
+        path: |
           build/benchmarks/benchmark1_memory_profile.txt
           build/benchmarks/benchmark1_memory_profile.pdf
+    
 
 
+   
