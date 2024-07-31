@@ -42,22 +42,17 @@ jobs:
         cd ..
     - name: Generate profiling report for benchmark
       run: |
-        cd build
-        cd benchmarks
-        pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.txt
-        pprof --pdf ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.pdf
-        cd ..
-        cd ..
+       
+        pprof --text ./${{github.workspace}}/build/benchmarks/${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.txt
+        pprof --pdf ./${{github.workspace}}/build/benchmarks/${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.pdf
+
 
     - name: Upload profiling reports
       uses: actions/upload-artifact@v3
       with:
         name: profiling-reports
-        run: |
-          cd build
-          cd benchmarks
         path: |
-          benchmark1_profile.txt
-          benchmark1_profile.pdf
+          ${{github.workspace}}/benchmark1_profile.txt
+          ${{github.workspace}}/benchmark1_profile.pdf
 
 
