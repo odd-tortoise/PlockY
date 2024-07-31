@@ -19,7 +19,7 @@ jobs:
     - name: Set up dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y autoconf automake libtool gperf cmake g++ graphviz # Install CMake and build tools
+        sudo apt-get install -y autoconf automake libtool gperf cmake g++ graphviz ghostscript
         git clone https://github.com/gperftools/gperftools.git
         cd gperftools
         ./autogen.sh
@@ -33,17 +33,20 @@ jobs:
         cmake -B ${{github.workspace}}/build
         cmake --build ${{github.workspace}}/build
 
-    - name: Run  benchmark with profiling
+    - name: Run benchmark with profiling
       run: |
         cd build/benchmarks
-        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./${{ github.event.inputs.benchmark1 }}
+        HEAPCHECK=normal LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof HEAPPROFILE=benchmark1_heap ./${{ github.event.inputs.benchmark1 }}
         cd ../..
 
     - name: Generate profiling report for benchmark
       run: |
         cd build/benchmarks
-        pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.txt
-        pprof --pdf ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.pdf
+        pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.txt
+        pprof --pdf ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.pdf
+        
+        pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1_heap.0001.heap > benchmark1_memory_profile.txt
+        pprof --pdf ./${{ github.event.inputs.benchmark1 }} benchmark1_heap.0001.heap > benchmark1_memory_profile.pdf
         cd ../..
 
     - name: Upload profiling reports
@@ -51,7 +54,9 @@ jobs:
       with:
         name: profiling-reports
         path: |
-          build/benchmarks/benchmark1_profile.txt
-          build/benchmarks/benchmark1_profile.pdf
+          build/benchmarks/benchmark1_cpu_profile.txt
+          build/benchmarks/benchmark1_cpu_profile.pdf
+          build/benchmarks/benchmark1_memory_profile.txt
+          build/benchmarks/benchmark1_memory_profile.pdf
 
 
