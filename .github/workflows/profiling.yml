@@ -6,7 +6,7 @@ on:
       benchmark1:
         description: 'Benchmark to run'
         required: true
-        default: 'benchmarks/TPE_abb20_2step'
+        default: 'TPE_abb20_2step'
 
 jobs:
   build-and-profile:
@@ -30,16 +30,16 @@ jobs:
     - name: Build
       run: |
         mkdir -p build
-        cd build
-        cmake ..
-        cmake --build .
+        cmake -B ${{github.workspace}}/build
+        cmake --build ${{github.workspace}}/build
 
     - name: Run  benchmark with profiling
       run: |
         cd build
-        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./build/${{ github.event.inputs.benchmark1 }}
+        cd benchmarks
+        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./${{ github.event.inputs.benchmark1 }}
         cd ..
-        
+        cd ..
     - name: Generate profiling report for benchmark
       run: |
         pprof --text ./build/${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_profile.txt
