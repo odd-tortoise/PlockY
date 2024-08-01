@@ -38,7 +38,7 @@ jobs:
         cd build/benchmarks
         LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./${{ github.event.inputs.benchmark1 }}
         pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.txt
-        pprof --pdf --nodefraction=0.0001 ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.pdf
+        pprof --pdf --nodefraction=0.0001 --edgefraction=0.0001 ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.pdf
         cd ../..
 
     - name: Upload CPU profiling reports
