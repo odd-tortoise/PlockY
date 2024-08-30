@@ -5,6 +5,7 @@
 - vario: doxygen, pybind, rifinire alcuni metodi 
 - Benchmark
 - commenti
+- make this README more complete
 
 ## Build
 

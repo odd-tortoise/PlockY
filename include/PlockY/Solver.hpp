@@ -23,6 +23,7 @@ namespace PlockY {
         static_assert(std::is_base_of<Block<MatrixType>, BlockType>::value, "BlockType must be a subclass of Block");
         static_assert(std::is_base_of<Block<VectorType>, VectorBlockType>::value, "BlockType must be a subclass of Block");
         
+        // I would have aggregated all parameters in a stuct. It is more flexible and easier to maintain
         double res = 0;
         bool toll_criteria_not_met = true;
         double toll = 1e-6;

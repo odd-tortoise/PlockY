@@ -1,4 +1,5 @@
-#pragma once
+#pragma once // pragma once is nice but is not (yet) standard. 
+//              however its an extension supported by most compilers
 
 #include "PlockY/BlockMatrix.hpp"
 #include "PlockY/BlockVector.hpp"
