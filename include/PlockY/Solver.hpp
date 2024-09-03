@@ -7,6 +7,7 @@
 #include <fstream>
 #include <optional>
 #include <string>
+#include <chrono>
 
 namespace PlockY {
 
@@ -97,9 +98,12 @@ namespace PlockY {
                                            bool verbose = false
                                            ) {  
             
+            std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
             matrix.regroup(strategy);
             rhs.regroup(strategy);
             guess.regroup(strategy);
+            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+            std::cout << "Time regrouping (sec) = " <<  (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  <<std::endl;
             
             BlockVector<VectorBlockType> u_old = guess;
 
@@ -107,17 +111,31 @@ namespace PlockY {
             
             while (toll_criteria_not_met && max_iter-- > 0) {
                 for(int i=0; i < steps.size(); i++) {
-                    
+                    begin = std::chrono::steady_clock::now();
                     auto LHS = matrix.get_lhs(i);
-                    
+                    end = std::chrono::steady_clock::now();
+                    std::cout << "Time loading LHS (sec) = " <<  (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  <<std::endl;
+            
+                    begin = std::chrono::steady_clock::now();
                     auto u_star_old = guess.get_rhs_compl(strategy,i);
-
+                    end = std::chrono::steady_clock::now();
+                    std::cout << "Time loading u_star (sec) = " <<  (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  <<std::endl;
+            
+                    begin = std::chrono::steady_clock::now();
                     auto corr =  matrix.get_corr(i) * u_star_old;
-                   
+                    end = std::chrono::steady_clock::now();
+                    std::cout << "Time corr1 (sec) = " <<  (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  <<std::endl;
+
+                    begin = std::chrono::steady_clock::now();
                     auto RHS = rhs.get_rhs(i) - corr;  
-                    
+                    end = std::chrono::steady_clock::now();
+                    std::cout << "Time corr2 (sec) = " <<  (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  <<std::endl;
+            
+                    begin = std::chrono::steady_clock::now();
                     auto u_star = block_solvers[i]->solveBlock(LHS, RHS);
-                  
+                    end = std::chrono::steady_clock::now();
+                    std::cout << "Time block solving (sec) = " <<  (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0  <<std::endl;
+            
                     u_star = relax(u_star, u_old.get_rhs(i), relax_factor);    
   
                     guess.update(steps[i], i, u_star);    
