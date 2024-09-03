@@ -1,0 +1,52 @@
+name: Run gperftools Profiling
+
+on:
+  workflow_dispatch:
+    inputs:
+      benchmark1:
+        description: 'Benchmark to run'
+        required: true
+        default: 'TPE_abb20_2step'
+
+jobs:
+  build-and-profile:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y autoconf automake libtool gperf cmake g++ graphviz ghostscript
+        git clone https://github.com/gperftools/gperftools.git
+        cd gperftools
+        ./autogen.sh
+        ./configure
+        make
+        sudo make install
+        
+    - name: Build
+      run: |
+        mkdir -p build
+        cmake -B ${{github.workspace}}/build
+        cmake --build ${{github.workspace}}/build
+
+    - name: Run CPU profiling
+      run: |
+        cd build/benchmarks
+        LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=benchmark1.prof ./${{ github.event.inputs.benchmark1 }}
+        pprof --text ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.txt
+        pprof --pdf --nodefraction=0.0001 --edgefraction=0.0001 ./${{ github.event.inputs.benchmark1 }} benchmark1.prof > benchmark1_cpu_profile.pdf
+        cd ../..
+
+    - name: Upload CPU profiling reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: profiling-reports-cpu
+        path: |
+          build/benchmarks/benchmark1_cpu_profile.txt
+          build/benchmarks/benchmark1_cpu_profile.pdf
+
+   
